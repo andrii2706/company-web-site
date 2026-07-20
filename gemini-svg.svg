@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&amp;display=swap');
+      
+      .bg { fill: #161616; }
+      .gold-text { fill: #c5a059; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
+      .brand-title { font-size: 76px; font-weight: 400; letter-spacing: 4px; }
+      .brand-subtitle { font-size: 19px; font-weight: 600; letter-spacing: 9.5px; text-anchor: middle; }
+      .line-separator { stroke: #c5a059; stroke-width: 3.5; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="500" class="bg" />
+
+  <g transform="translate(500, 235)">
+    <text x="-35" y="0" class="gold-text brand-title" text-anchor="end">ПАВ</text>
+    
+    <line x1="0" y1="-65" x2="0" y2="15" class="line-separator" />
+    
+    <text x="35" y="0" class="gold-text brand-title" text-anchor="start">IT</text>
+    
+    <text x="0" y="65" class="gold-text brand-subtitle">IT SOLUTIONS &amp; TECHNOLOGY</text>
+  </g>
+</svg>
