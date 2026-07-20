@@ -11,15 +11,21 @@
     </style>
   </defs>
 
+  <!-- Фон -->
   <rect width="1000" height="500" class="bg" />
 
+  <!-- Основна композиція (Центрована) -->
   <g transform="translate(500, 235)">
-    <text x="-35" y="0" class="gold-text brand-title" text-anchor="end">ПАВ</text>
+    <!-- Ліва частина назви: PAV -->
+    <text x="-35" y="0" class="gold-text brand-title" text-anchor="end">PAV</text>
     
+    <!-- Вертикальна лінія розмежування -->
     <line x1="0" y1="-65" x2="0" y2="15" class="line-separator" />
     
+    <!-- Права частина назви: IT -->
     <text x="35" y="0" class="gold-text brand-title" text-anchor="start">IT</text>
     
+    <!-- Слоган / Підпис -->
     <text x="0" y="65" class="gold-text brand-subtitle">IT SOLUTIONS &amp; TECHNOLOGY</text>
   </g>
 </svg>
