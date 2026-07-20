@@ -22,7 +22,7 @@ function PavItLogo({ className = "h-11 w-auto" }: { className?: string }) {
 
       <g transform="translate(110, 22)">
         <text x="-6" y="0" className="brown-text brand-title" textAnchor="end">
-          ПАВ
+          PAV
         </text>
         <line x1="0" y1="-18" x2="0" y2="6" className="line-separator" />
         <text x="6" y="0" className="gold-text brand-title" textAnchor="start">
