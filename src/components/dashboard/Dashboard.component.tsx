@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useWpData } from "../../hooks/useWpData";
+import { useLanguage } from "../../i18n/LanguageContext";
 import {
   getFeatureCards,
   getLogos,
@@ -15,54 +16,105 @@ import { CodeConsole } from "./CodeConsole";
 
 // ---------- Резервний контент (використовується, якщо WordPress тимчасово недоступний) ----------
 
-const FALLBACK_SETTINGS: WpSiteSettings = {
-  hero_badge: "Новий редактор компонентів вже доступний",
-  hero_title: "Збирайте веб-додатки швидше, без боротьби з інфраструктурою",
-  hero_subtitle:
-    "Pav It з'єднує дизайн, бекенд та деплой в одному робочому просторі — ваша команда фокусується на продукті, а не на конфігурації серверів.",
-  hero_cta_primary: "Почати безкоштовно",
-  hero_cta_secondary: "Подивитись можливості",
-  hero_benefit_1: "14 днів безкоштовно",
-  hero_benefit_2: "Без банківської картки",
-  hero_mock_url: "app.pavit.dev/dashboard",
-  hero_mock_status: "Деплой успішний",
-  hero_mock_build_time: "Час білда: 12с",
-  logos_title: "Команди, що вже будують на Pav It",
-  steps_title: "Від ідеї до продакшну за три кроки",
-  steps_subtitle: "Реальний шлях команди, яка щойно підключила Pav It до проєкту.",
-  features_title: "Усе, що потрібно команді розробки",
-  features_subtitle: "Від першого компонента до продакшн-релізу — без перемикання між десятком окремих сервісів.",
-  cta_title: "Готові спробувати Pav It?",
-  cta_subtitle: "Підключіть перший проєкт за кілька хвилин. Картка не потрібна.",
-  cta_button: "Почати безкоштовно",
+const FALLBACK_SETTINGS: Record<"uk" | "en", WpSiteSettings> = {
+  uk: {
+    hero_badge: "Новий редактор компонентів вже доступний",
+    hero_title: "Збирайте веб-додатки швидше, без боротьби з інфраструктурою",
+    hero_subtitle:
+      "Pav It з'єднує дизайн, бекенд та деплой в одному робочому просторі — ваша команда фокусується на продукті, а не на конфігурації серверів.",
+    hero_cta_primary: "Почати безкоштовно",
+    hero_cta_secondary: "Подивитись можливості",
+    hero_benefit_1: "14 днів безкоштовно",
+    hero_benefit_2: "Без банківської картки",
+    hero_mock_url: "app.pavit.dev/dashboard",
+    hero_mock_status: "Деплой успішний",
+    hero_mock_build_time: "Час білда: 12с",
+    logos_title: "Команди, що вже будують на Pav It",
+    steps_title: "Від ідеї до продакшну за три кроки",
+    steps_subtitle: "Реальний шлях команди, яка щойно підключила Pav It до проєкту.",
+    features_title: "Усе, що потрібно команді розробки",
+    features_subtitle: "Від першого компонента до продакшн-релізу — без перемикання між десятком окремих сервісів.",
+    cta_title: "Готові спробувати Pav It?",
+    cta_subtitle: "Підключіть перший проєкт за кілька хвилин. Картка не потрібна.",
+    cta_button: "Почати безкоштовно",
+  },
+  en: {
+    hero_badge: "New component editor is now available",
+    hero_title: "Build web apps faster, without fighting your infrastructure",
+    hero_subtitle:
+      "Pav It brings design, backend, and deployment into one workspace — your team focuses on the product, not server configuration.",
+    hero_cta_primary: "Start for free",
+    hero_cta_secondary: "See what's included",
+    hero_benefit_1: "14 days free",
+    hero_benefit_2: "No credit card required",
+    hero_mock_url: "app.pavit.dev/dashboard",
+    hero_mock_status: "Deploy successful",
+    hero_mock_build_time: "Build time: 12s",
+    logos_title: "Teams already building on Pav It",
+    steps_title: "From idea to production in three steps",
+    steps_subtitle: "The real path of a team that just connected Pav It to their project.",
+    features_title: "Everything your dev team needs",
+    features_subtitle: "From the first component to a production release — without switching between a dozen separate services.",
+    cta_title: "Ready to try Pav It?",
+    cta_subtitle: "Connect your first project in a few minutes. No card required.",
+    cta_button: "Start for free",
+  },
 };
 
-const FALLBACK_FEATURES: WpFeatureCard[] = [
-  {
-    id: 1,
-    title: "Візуальний редактор",
-    description: "Збирайте інтерфейс з готових компонентів і одразу бачите, як він поводиться з реальними даними.",
-    icon: "grid",
-    page: "dashboard",
-    featuresList: [],
-  },
-  {
-    id: 2,
-    title: "Автоматичний деплой",
-    description: "Кожен пуш у репозиторій збирається й публікується сам — окреме середовище під кожен pull request.",
-    icon: "cube",
-    page: "dashboard",
-    featuresList: [],
-  },
-  {
-    id: 3,
-    title: "Контроль доступу",
-    description: "Гнучкі ролі для команди й окреме середовище для тестування без ризику для продакшну.",
-    icon: "shield",
-    page: "dashboard",
-    featuresList: [],
-  },
-];
+const FALLBACK_FEATURES: Record<"uk" | "en", WpFeatureCard[]> = {
+  uk: [
+    {
+      id: 1,
+      title: "Візуальний редактор",
+      description: "Збирайте інтерфейс з готових компонентів і одразу бачите, як він поводиться з реальними даними.",
+      icon: "grid",
+      page: "dashboard",
+      featuresList: [],
+    },
+    {
+      id: 2,
+      title: "Автоматичний деплой",
+      description: "Кожен пуш у репозиторій збирається й публікується сам — окреме середовище під кожен pull request.",
+      icon: "cube",
+      page: "dashboard",
+      featuresList: [],
+    },
+    {
+      id: 3,
+      title: "Контроль доступу",
+      description: "Гнучкі ролі для команди й окреме середовище для тестування без ризику для продакшну.",
+      icon: "shield",
+      page: "dashboard",
+      featuresList: [],
+    },
+  ],
+  en: [
+    {
+      id: 1,
+      title: "Visual editor",
+      description: "Build interfaces from ready-made components and see instantly how they behave with real data.",
+      icon: "grid",
+      page: "dashboard",
+      featuresList: [],
+    },
+    {
+      id: 2,
+      title: "Automatic deployment",
+      description: "Every push to the repository builds and ships itself — a separate environment for every pull request.",
+      icon: "cube",
+      page: "dashboard",
+      featuresList: [],
+    },
+    {
+      id: 3,
+      title: "Access control",
+      description: "Flexible roles for your team and a separate environment for testing without risking production.",
+      icon: "shield",
+      page: "dashboard",
+      featuresList: [],
+    },
+  ],
+};
 
 const FALLBACK_LOGOS: WpLogo[] = [
   { id: 1, name: "Vertex" },
@@ -72,21 +124,33 @@ const FALLBACK_LOGOS: WpLogo[] = [
   { id: 5, name: "Cobalt" },
 ];
 
-const FALLBACK_TESTIMONIAL: WpTestimonial[] = [
-  {
-    id: 1,
-    quote:
-      "Ми скоротили час від коміту до продакшну з сорока хвилин до менш ніж двох. Команда нарешті фокусується на продукті, а не на CI-конфігах.",
-    authorName: "Олена Ткач",
-    authorRole: "CTO, Norvik",
-  },
-];
+const FALLBACK_TESTIMONIAL: Record<"uk" | "en", WpTestimonial[]> = {
+  uk: [
+    {
+      id: 1,
+      quote:
+        "Ми скоротили час від коміту до продакшну з сорока хвилин до менш ніж двох. Команда нарешті фокусується на продукті, а не на CI-конфігах.",
+      authorName: "Олена Ткач",
+      authorRole: "CTO, Norvik",
+    },
+  ],
+  en: [
+    {
+      id: 1,
+      quote:
+        "We cut the time from commit to production from forty minutes to under two. The team finally focuses on the product, not CI configs.",
+      authorName: "Olena Tkach",
+      authorRole: "CTO, Norvik",
+    },
+  ],
+};
 
 export function Dashboard() {
-  const { data: settings } = useWpData(getSiteSettings, FALLBACK_SETTINGS);
-  const { data: features } = useWpData(() => getFeatureCards("dashboard"), FALLBACK_FEATURES);
+  const { lang, t, localizePath } = useLanguage();
+  const { data: settings } = useWpData(() => getSiteSettings(lang), FALLBACK_SETTINGS[lang]);
+  const { data: features } = useWpData(() => getFeatureCards("dashboard", lang), FALLBACK_FEATURES[lang]);
   const { data: logos } = useWpData(getLogos, FALLBACK_LOGOS);
-  const { data: testimonials } = useWpData(getTestimonials, FALLBACK_TESTIMONIAL);
+  const { data: testimonials } = useWpData(() => getTestimonials(lang), FALLBACK_TESTIMONIAL[lang]);
   const testimonial = testimonials[0];
 
   return (
@@ -102,10 +166,10 @@ export function Dashboard() {
           </h1>
           <p className="text-[#4B4238] text-lg leading-relaxed mb-8 max-w-md">{settings.hero_subtitle}</p>
           <div className="flex flex-wrap gap-3 mb-8">
-            <Link to="/contact-us" className="px-6 py-3 font-medium btn-primary">
+            <Link to={localizePath("/contact-us")} className="px-6 py-3 font-medium btn-primary">
               {settings.hero_cta_primary}
             </Link>
-            <Link to="/services" className="px-6 py-3 font-medium btn-secondary">
+            <Link to={localizePath("/services")} className="px-6 py-3 font-medium btn-secondary">
               {settings.hero_cta_secondary}
             </Link>
           </div>
@@ -130,6 +194,7 @@ export function Dashboard() {
             deployedUrl={settings.hero_mock_url}
             finalStatus={settings.hero_mock_status}
             buildTime={settings.hero_mock_build_time}
+            comment={t.console.comment}
           />
         </div>
       </section>
@@ -173,28 +238,22 @@ export function Dashboard() {
               <div className="w-12 h-12 rounded-full bg-[#221D17] text-white flex items-center justify-center font-display font-semibold mb-5 relative z-10">
                 1
               </div>
-              <h3 className="font-display font-semibold text-lg mb-2">Підключіть репозиторій</h3>
-              <p className="text-[#4B4238] text-sm leading-relaxed">
-                Pav It розпізнає стек проєкту й налаштовує середовище збірки автоматично.
-              </p>
+              <h3 className="font-display font-semibold text-lg mb-2">{t.steps.step1Title}</h3>
+              <p className="text-[#4B4238] text-sm leading-relaxed">{t.steps.step1Desc}</p>
             </div>
             <div className="relative">
               <div className="w-12 h-12 rounded-full bg-[#221D17] text-white flex items-center justify-center font-display font-semibold mb-5 relative z-10">
                 2
               </div>
-              <h3 className="font-display font-semibold text-lg mb-2">Збирайте інтерфейс</h3>
-              <p className="text-[#4B4238] text-sm leading-relaxed">
-                Команда працює в одному просторі: дизайнер, фронтенд і бекенд бачать ті самі зміни в реальному часі.
-              </p>
+              <h3 className="font-display font-semibold text-lg mb-2">{t.steps.step2Title}</h3>
+              <p className="text-[#4B4238] text-sm leading-relaxed">{t.steps.step2Desc}</p>
             </div>
             <div className="relative">
               <div className="w-12 h-12 rounded-full bg-[#221D17] text-white flex items-center justify-center font-display font-semibold mb-5 relative z-10">
                 3
               </div>
-              <h3 className="font-display font-semibold text-lg mb-2">Публікуйте без простою</h3>
-              <p className="text-[#4B4238] text-sm leading-relaxed">
-                Кожен реліз перевіряється автоматично, а відкат на попередню версію займає секунди.
-              </p>
+              <h3 className="font-display font-semibold text-lg mb-2">{t.steps.step3Title}</h3>
+              <p className="text-[#4B4238] text-sm leading-relaxed">{t.steps.step3Desc}</p>
             </div>
           </div>
         </div>
@@ -227,7 +286,7 @@ export function Dashboard() {
         <div className="rounded-3xl bg-[#221D17] px-8 py-16 md:py-20 text-center">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">{settings.cta_title}</h2>
           <p className="text-[#9C9186] mb-8 max-w-md mx-auto">{settings.cta_subtitle}</p>
-          <Link to="/contact-us" className="inline-block px-7 py-3.5 font-medium btn-primary">
+          <Link to={localizePath("/contact-us")} className="inline-block px-7 py-3.5 font-medium btn-primary">
             {settings.cta_button}
           </Link>
         </div>

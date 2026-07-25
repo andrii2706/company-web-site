@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useWpData } from "../../hooks/useWpData";
+import { useLanguage } from "../../i18n/LanguageContext";
 import {
   getFeatureCards,
   getSiteSettings,
@@ -14,73 +15,140 @@ import { FeatureIcon } from "../icons/FeatureIcon";
 
 // ---------- Резервний контент (використовується, якщо WordPress тимчасово недоступний) ----------
 
-const FALLBACK_SETTINGS: WpSiteSettings = {
-  about_badge: "Заснована у 2021 році",
-  about_title: "Ми будуємо інструменти, якими самі хочемо користуватись",
-  about_intro:
-    "Pav It з'явився з власної фрустрації: команда з трьох розробників витрачала більше часу на налаштування інфраструктури, ніж на сам продукт. Зараз нам довіряють понад 400 команд по всьому світу.",
-  story_title: "Як усе починалось",
-  story_p1:
-    "Троє інженерів зустрілись на проєкті для фінтех-стартапу й помітили одну й ту саму проблему: кожен новий сервіс вимагав тижні на налаштування деплою, моніторингу й доступів.",
-  story_p2:
-    "Вони почали будувати внутрішній інструмент для власної команди — без зайвих абстракцій, з фокусом на швидкість. За рік ним зацікавились ще п'ять компаній зі схожими болями.",
-  story_p3:
-    "Сьогодні Pav It — окрема команда з 38 людей, що працює повністю віддалено з фокусом на надійність і простоту інтерфейсу.",
-  principles_title: "Принципи, якими керуємось",
-  principles_subtitle: "Не лозунги на стіні, а реальні рішення, які впливають на продукт щодня.",
-  team_title: "Люди за продуктом",
-  team_subtitle: "Невелика команда, що цінує прямий зв'язок з користувачами.",
-  join_title: "Хочете приєднатись до команди?",
-  join_subtitle: "Ми завжди шукаємо людей, яким не байдуже до деталей.",
-  join_button: "Зв'язатись з нами",
+const FALLBACK_SETTINGS: Record<"uk" | "en", WpSiteSettings> = {
+  uk: {
+    about_badge: "Заснована у 2021 році",
+    about_title: "Ми будуємо інструменти, якими самі хочемо користуватись",
+    about_intro:
+      "Pav It з'явився з власної фрустрації: команда з трьох розробників витрачала більше часу на налаштування інфраструктури, ніж на сам продукт. Зараз нам довіряють понад 400 команд по всьому світу.",
+    story_title: "Як усе починалось",
+    story_p1:
+      "Троє інженерів зустрілись на проєкті для фінтех-стартапу й помітили одну й ту саму проблему: кожен новий сервіс вимагав тижні на налаштування деплою, моніторингу й доступів.",
+    story_p2:
+      "Вони почали будувати внутрішній інструмент для власної команди — без зайвих абстракцій, з фокусом на швидкість. За рік ним зацікавились ще п'ять компаній зі схожими болями.",
+    story_p3:
+      "Сьогодні Pav It — окрема команда з 38 людей, що працює повністю віддалено з фокусом на надійність і простоту інтерфейсу.",
+    principles_title: "Принципи, якими керуємось",
+    principles_subtitle: "Не лозунги на стіні, а реальні рішення, які впливають на продукт щодня.",
+    team_title: "Люди за продуктом",
+    team_subtitle: "Невелика команда, що цінує прямий зв'язок з користувачами.",
+    join_title: "Хочете приєднатись до команди?",
+    join_subtitle: "Ми завжди шукаємо людей, яким не байдуже до деталей.",
+    join_button: "Зв'язатись з нами",
+  },
+  en: {
+    about_badge: "Founded in 2021",
+    about_title: "We build the tools we want to use ourselves",
+    about_intro:
+      "Pav It was born out of our own frustration: a team of three developers spent more time configuring infrastructure than building the product. Today over 400 teams worldwide trust us.",
+    story_title: "How it all started",
+    story_p1:
+      "Three engineers met on a fintech startup project and noticed the same problem: every new service took weeks to configure for deployment, monitoring, and access.",
+    story_p2:
+      "They started building an internal tool for their own team — no unnecessary abstractions, focused on speed. Within a year, five more companies with similar pains were interested.",
+    story_p3:
+      "Today Pav It is a standalone team of 38 people, working fully remotely with a focus on reliability and a simple interface.",
+    principles_title: "The principles we follow",
+    principles_subtitle: "Not slogans on a wall — real decisions that shape the product every day.",
+    team_title: "The people behind the product",
+    team_subtitle: "A small team that values a direct connection with users.",
+    join_title: "Want to join the team?",
+    join_subtitle: "We're always looking for people who care about the details.",
+    join_button: "Get in touch",
+  },
 };
 
-const FALLBACK_STATS: WpStat[] = [
-  { id: 1, value: "2021", label: "Рік заснування" },
-  { id: 2, value: "400+", label: "Команд-клієнтів" },
-  { id: 3, value: "38", label: "Людей у команді" },
-  { id: 4, value: "99.95%", label: "Аптайм платформи" },
-];
+const FALLBACK_STATS: Record<"uk" | "en", WpStat[]> = {
+  uk: [
+    { id: 1, value: "2021", label: "Рік заснування" },
+    { id: 2, value: "400+", label: "Команд-клієнтів" },
+    { id: 3, value: "38", label: "Людей у команді" },
+    { id: 4, value: "99.95%", label: "Аптайм платформи" },
+  ],
+  en: [
+    { id: 1, value: "2021", label: "Year founded" },
+    { id: 2, value: "400+", label: "Client teams" },
+    { id: 3, value: "38", label: "People on the team" },
+    { id: 4, value: "99.95%", label: "Platform uptime" },
+  ],
+};
 
-const FALLBACK_PRINCIPLES: WpFeatureCard[] = [
-  {
-    id: 1,
-    title: "Простота понад усе",
-    description: "Якщо функцію не можна пояснити за одне речення — ми переробляємо її, а не документацію.",
-    icon: "grid",
-    page: "about",
-    featuresList: [],
-  },
-  {
-    id: 2,
-    title: "Швидкість — це повага",
-    description: "Кожна секунда очікування — це секунда чужого робочого часу. Ми ставимось до цього серйозно.",
-    icon: "clock",
-    page: "about",
-    featuresList: [],
-  },
-  {
-    id: 3,
-    title: "Дані — лише ваші",
-    description: "Ми ніколи не використовуємо клієнтський код чи дані для тренування будь-яких моделей.",
-    icon: "lock",
-    page: "about",
-    featuresList: [],
-  },
-];
+const FALLBACK_PRINCIPLES: Record<"uk" | "en", WpFeatureCard[]> = {
+  uk: [
+    {
+      id: 1,
+      title: "Простота понад усе",
+      description: "Якщо функцію не можна пояснити за одне речення — ми переробляємо її, а не документацію.",
+      icon: "grid",
+      page: "about",
+      featuresList: [],
+    },
+    {
+      id: 2,
+      title: "Швидкість — це повага",
+      description: "Кожна секунда очікування — це секунда чужого робочого часу. Ми ставимось до цього серйозно.",
+      icon: "clock",
+      page: "about",
+      featuresList: [],
+    },
+    {
+      id: 3,
+      title: "Дані — лише ваші",
+      description: "Ми ніколи не використовуємо клієнтський код чи дані для тренування будь-яких моделей.",
+      icon: "lock",
+      page: "about",
+      featuresList: [],
+    },
+  ],
+  en: [
+    {
+      id: 1,
+      title: "Simplicity above all",
+      description: "If a feature can't be explained in one sentence, we redesign the feature, not the docs.",
+      icon: "grid",
+      page: "about",
+      featuresList: [],
+    },
+    {
+      id: 2,
+      title: "Speed is respect",
+      description: "Every second of waiting is a second of someone else's working time. We take that seriously.",
+      icon: "clock",
+      page: "about",
+      featuresList: [],
+    },
+    {
+      id: 3,
+      title: "Your data stays yours",
+      description: "We never use customer code or data to train any models.",
+      icon: "lock",
+      page: "about",
+      featuresList: [],
+    },
+  ],
+};
 
-const FALLBACK_TEAM: WpTeamMember[] = [
-  { id: 1, name: "Андрій Коваль", role: "Співзасновник, CEO", color: "#8A5A2B" },
-  { id: 2, name: "Марія Бойко", role: "Співзасновниця, CTO", color: "#10B981" },
-  { id: 3, name: "Дмитро Сидоренко", role: "Голова продукту", color: "#EF4444" },
-  { id: 4, name: "Олена Ткач", role: "Голова партнерств", color: "#F59E0B" },
-];
+const FALLBACK_TEAM: Record<"uk" | "en", WpTeamMember[]> = {
+  uk: [
+    { id: 1, name: "Андрій Коваль", role: "Співзасновник, CEO", color: "#8A5A2B" },
+    { id: 2, name: "Марія Бойко", role: "Співзасновниця, CTO", color: "#10B981" },
+    { id: 3, name: "Дмитро Сидоренко", role: "Голова продукту", color: "#EF4444" },
+    { id: 4, name: "Олена Ткач", role: "Голова партнерств", color: "#F59E0B" },
+  ],
+  en: [
+    { id: 1, name: "Andriy Koval", role: "Co-founder, CEO", color: "#8A5A2B" },
+    { id: 2, name: "Maria Boyko", role: "Co-founder, CTO", color: "#10B981" },
+    { id: 3, name: "Dmytro Sydorenko", role: "Head of Product", color: "#EF4444" },
+    { id: 4, name: "Olena Tkach", role: "Head of Partnerships", color: "#F59E0B" },
+  ],
+};
 
 export function AboutUs() {
-  const { data: settings } = useWpData(getSiteSettings, FALLBACK_SETTINGS);
-  const { data: stats } = useWpData(getStats, FALLBACK_STATS);
-  const { data: principles } = useWpData(() => getFeatureCards("about"), FALLBACK_PRINCIPLES);
-  const { data: team } = useWpData(getTeam, FALLBACK_TEAM);
+  const { lang, localizePath } = useLanguage();
+  const { data: settings } = useWpData(() => getSiteSettings(lang), FALLBACK_SETTINGS[lang]);
+  const { data: stats } = useWpData(() => getStats(lang), FALLBACK_STATS[lang]);
+  const { data: principles } = useWpData(() => getFeatureCards("about", lang), FALLBACK_PRINCIPLES[lang]);
+  const { data: team } = useWpData(() => getTeam(lang), FALLBACK_TEAM[lang]);
 
   return (
     <>
@@ -186,7 +254,7 @@ export function AboutUs() {
             {settings.join_title}
           </h2>
           <p className="text-[#9C9186] mb-8 max-w-md mx-auto">{settings.join_subtitle}</p>
-          <Link to="/contact-us" className="inline-block px-7 py-3.5 font-medium btn-primary">
+          <Link to={localizePath("/contact-us")} className="inline-block px-7 py-3.5 font-medium btn-primary">
             {settings.join_button}
           </Link>
         </div>

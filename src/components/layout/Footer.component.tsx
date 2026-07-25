@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useWpData } from "../../hooks/useWpData";
+import { useLanguage } from "../../i18n/LanguageContext";
 import { getSiteSettings, type WpSiteSettings } from "../../service/wp";
 
 const FALLBACK_SETTINGS: WpSiteSettings = {
@@ -11,7 +12,8 @@ const FALLBACK_SETTINGS: WpSiteSettings = {
 };
 
 export function Footer() {
-  const { data: settings } = useWpData(getSiteSettings, FALLBACK_SETTINGS);
+  const { lang, t, localizePath } = useLanguage();
+  const { data: settings } = useWpData(() => getSiteSettings(lang), FALLBACK_SETTINGS);
 
   return (
     <footer className="border-t border-[#E6DFD3]">
@@ -34,34 +36,34 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="font-medium text-sm mb-3">Продукт</p>
+          <p className="font-medium text-sm mb-3">{t.footer.product}</p>
           <div className="space-y-2 text-sm text-[#4B4238]">
-            <Link to="/services" className="block hover:text-[#221D17]">
-              Можливості
+            <Link to={localizePath("/services")} className="block hover:text-[#221D17]">
+              {t.footer.features}
             </Link>
-            <Link to="/services" className="block hover:text-[#221D17]">
-              Тарифи
+            <Link to={localizePath("/services")} className="block hover:text-[#221D17]">
+              {t.footer.pricing}
             </Link>
-            <Link to="/contact-us" className="block hover:text-[#221D17]">
-              Демо
+            <Link to={localizePath("/contact-us")} className="block hover:text-[#221D17]">
+              {t.footer.demo}
             </Link>
           </div>
         </div>
 
         <div>
-          <p className="font-medium text-sm mb-3">Компанія</p>
+          <p className="font-medium text-sm mb-3">{t.footer.company}</p>
           <div className="space-y-2 text-sm text-[#4B4238]">
-            <Link to="/about-us" className="block hover:text-[#221D17]">
-              Про нас
+            <Link to={localizePath("/about-us")} className="block hover:text-[#221D17]">
+              {t.footer.aboutUs}
             </Link>
-            <Link to="/contact-us" className="block hover:text-[#221D17]">
-              Контакти
+            <Link to={localizePath("/contact-us")} className="block hover:text-[#221D17]">
+              {t.footer.contacts}
             </Link>
           </div>
         </div>
 
         <div>
-          <p className="font-medium text-sm mb-3">Контакти</p>
+          <p className="font-medium text-sm mb-3">{t.footer.contacts}</p>
           <div className="space-y-2 text-sm text-[#4B4238]">
             <p>{settings.contact_email}</p>
             <p>{settings.contact_office_city}</p>
@@ -74,10 +76,10 @@ export function Footer() {
           <span>{settings.footer_copyright}</span>
           <div className="flex gap-5">
             <a href="#" className="hover:text-[#221D17]">
-              Конфіденційність
+              {t.footer.privacy}
             </a>
             <a href="#" className="hover:text-[#221D17]">
-              Умови використання
+              {t.footer.terms}
             </a>
           </div>
         </div>

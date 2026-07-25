@@ -4,6 +4,7 @@ interface CodeConsoleProps {
   deployedUrl: string;
   finalStatus: string;
   buildTime: string;
+  comment: string;
 }
 
 /**
@@ -15,51 +16,54 @@ interface CodeConsoleProps {
  */
 type Token = { t: string; c: string };
 
-const CODE_LINES: Token[][] = [
-  [{ t: "// pav-it: деплой проєкту", c: "code-com" }],
-  [
-    { t: "import", c: "code-kw" },
-    { t: " { deploy } ", c: "code-txt" },
-    { t: "from", c: "code-kw" },
-    { t: " ", c: "code-txt" },
-    { t: "'@pavit/cli'", c: "code-str" },
-  ],
-  [{ t: "", c: "code-txt" }],
-  [
-    { t: "await", c: "code-kw" },
-    { t: " ", c: "code-txt" },
-    { t: "deploy", c: "code-fn" },
-    { t: "({", c: "code-txt" },
-  ],
-  [
-    { t: "  project", c: "code-txt" },
-    { t: ": ", c: "code-txt" },
-    { t: "'company-web-app'", c: "code-str" },
-    { t: ",", c: "code-txt" },
-  ],
-  [
-    { t: "  target", c: "code-txt" },
-    { t: ": ", c: "code-txt" },
-    { t: "'production'", c: "code-str" },
-    { t: ",", c: "code-txt" },
-  ],
-  [
-    { t: "  rollback", c: "code-txt" },
-    { t: ": ", c: "code-txt" },
-    { t: "true", c: "code-kw" },
-    { t: ",", c: "code-txt" },
-  ],
-  [{ t: "})", c: "code-txt" }],
-];
+function buildCodeLines(comment: string): Token[][] {
+  return [
+    [{ t: comment, c: "code-com" }],
+    [
+      { t: "import", c: "code-kw" },
+      { t: " { deploy } ", c: "code-txt" },
+      { t: "from", c: "code-kw" },
+      { t: " ", c: "code-txt" },
+      { t: "'@pavit/cli'", c: "code-str" },
+    ],
+    [{ t: "", c: "code-txt" }],
+    [
+      { t: "await", c: "code-kw" },
+      { t: " ", c: "code-txt" },
+      { t: "deploy", c: "code-fn" },
+      { t: "({", c: "code-txt" },
+    ],
+    [
+      { t: "  project", c: "code-txt" },
+      { t: ": ", c: "code-txt" },
+      { t: "'company-web-app'", c: "code-str" },
+      { t: ",", c: "code-txt" },
+    ],
+    [
+      { t: "  target", c: "code-txt" },
+      { t: ": ", c: "code-txt" },
+      { t: "'production'", c: "code-str" },
+      { t: ",", c: "code-txt" },
+    ],
+    [
+      { t: "  rollback", c: "code-txt" },
+      { t: ": ", c: "code-txt" },
+      { t: "true", c: "code-kw" },
+      { t: ",", c: "code-txt" },
+    ],
+    [{ t: "})", c: "code-txt" }],
+  ];
+}
 
-export function CodeConsole({ deployedUrl, finalStatus, buildTime }: CodeConsoleProps) {
+export function CodeConsole({ deployedUrl, finalStatus, buildTime, comment }: CodeConsoleProps) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const codeLines = buildCodeLines(comment);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
-      setVisibleLines(CODE_LINES.length);
+      setVisibleLines(codeLines.length);
       setShowResult(true);
       return;
     }
@@ -67,7 +71,7 @@ export function CodeConsole({ deployedUrl, finalStatus, buildTime }: CodeConsole
     let cancelled = false;
     let delay = 350;
 
-    CODE_LINES.forEach((_, i) => {
+    codeLines.forEach((_, i) => {
       delay += 260;
       setTimeout(() => {
         if (!cancelled) setVisibleLines(i + 1);
@@ -81,6 +85,7 @@ export function CodeConsole({ deployedUrl, finalStatus, buildTime }: CodeConsole
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cleanBuildTime = buildTime.replace(/^[^:]*:\s*/i, "");
@@ -99,7 +104,7 @@ export function CodeConsole({ deployedUrl, finalStatus, buildTime }: CodeConsole
       </div>
 
       <div className="p-5 min-h-[280px]">
-        {CODE_LINES.map((line, i) => (
+        {codeLines.map((line, i) => (
           <div
             key={i}
             className="code-line flex"

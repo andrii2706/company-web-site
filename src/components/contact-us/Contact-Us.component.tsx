@@ -1,28 +1,49 @@
 import { useState, type FormEvent } from "react";
 import { useWpData } from "../../hooks/useWpData";
+import { useLanguage } from "../../i18n/LanguageContext";
 import { getSiteSettings, type WpSiteSettings } from "../../service/wp";
 
-const FALLBACK_SETTINGS: WpSiteSettings = {
-  contact_title: "Поговорімо про ваш проєкт",
-  contact_subtitle:
-    "Напишіть кілька слів про команду й задачу — відповідаємо протягом одного робочого дня.",
-  contact_email: "hello@pavit.dev",
-  contact_support_hours: "Пн–Пт, 9:00–18:00 за Києвом",
-  contact_office_city: "Львів, Україна",
-  contact_office_note: "Працюємо віддалено",
-  contact_social_twitter: "#",
-  contact_social_linkedin: "#",
-  contact_social_github: "#",
-  contact_consent_text:
-    "Погоджуюсь на обробку персональних даних відповідно до політики конфіденційності Pav It.",
-  contact_success_title: "Повідомлення надіслано",
-  contact_success_text:
-    "Дякуємо за звернення. Команда відповість на вказану пошту протягом одного робочого дня.",
+const FALLBACK_SETTINGS: Record<"uk" | "en", WpSiteSettings> = {
+  uk: {
+    contact_title: "Поговорімо про ваш проєкт",
+    contact_subtitle:
+      "Напишіть кілька слів про команду й задачу — відповідаємо протягом одного робочого дня.",
+    contact_email: "hello@pavit.dev",
+    contact_support_hours: "Пн–Пт, 9:00–18:00 за Києвом",
+    contact_office_city: "Львів, Україна",
+    contact_office_note: "Працюємо віддалено",
+    contact_social_twitter: "#",
+    contact_social_linkedin: "#",
+    contact_social_github: "#",
+    contact_consent_text:
+      "Погоджуюсь на обробку персональних даних відповідно до політики конфіденційності Pav It.",
+    contact_success_title: "Повідомлення надіслано",
+    contact_success_text:
+      "Дякуємо за звернення. Команда відповість на вказану пошту протягом одного робочого дня.",
+  },
+  en: {
+    contact_title: "Let's talk about your project",
+    contact_subtitle:
+      "Write a few words about your team and the task — we reply within one business day.",
+    contact_email: "hello@pavit.dev",
+    contact_support_hours: "Mon–Fri, 9:00–18:00 Kyiv time",
+    contact_office_city: "Lviv, Ukraine",
+    contact_office_note: "We work remotely",
+    contact_social_twitter: "#",
+    contact_social_linkedin: "#",
+    contact_social_github: "#",
+    contact_consent_text:
+      "I agree to the processing of personal data in accordance with Pav It's privacy policy.",
+    contact_success_title: "Message sent",
+    contact_success_text:
+      "Thanks for reaching out. Our team will reply to your email within one business day.",
+  },
 };
 
 export function ContactUs() {
   const [submitted, setSubmitted] = useState(false);
-  const { data: settings } = useWpData(getSiteSettings, FALLBACK_SETTINGS);
+  const { lang, t } = useLanguage();
+  const { data: settings } = useWpData(() => getSiteSettings(lang), FALLBACK_SETTINGS[lang]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,7 +69,7 @@ export function ContactUs() {
                   <rect x="3" y="4" width="14" height="12" rx="1.5" stroke="#8A5A2B" strokeWidth="1.6" />
                 </svg>
               </div>
-              <p className="font-medium text-sm mb-1">Електронна пошта</p>
+              <p className="font-medium text-sm mb-1">{t.contactInfo.email}</p>
               <p className="text-sm text-[#4B4238]">{settings.contact_email}</p>
             </div>
 
@@ -63,7 +84,7 @@ export function ContactUs() {
                   />
                 </svg>
               </div>
-              <p className="font-medium text-sm mb-1">Підтримка клієнтів</p>
+              <p className="font-medium text-sm mb-1">{t.contactInfo.support}</p>
               <p className="text-sm text-[#4B4238]">{settings.contact_support_hours}</p>
             </div>
 
@@ -78,7 +99,7 @@ export function ContactUs() {
                   <circle cx="10" cy="8" r="2.5" stroke="#EF4444" strokeWidth="1.6" />
                 </svg>
               </div>
-              <p className="font-medium text-sm mb-1">Офіс</p>
+              <p className="font-medium text-sm mb-1">{t.contactInfo.office}</p>
               <p className="text-sm text-[#4B4238]">
                 {settings.contact_office_city}
                 <br />
@@ -87,7 +108,7 @@ export function ContactUs() {
             </div>
 
             <div className="card p-6">
-              <p className="font-medium text-sm mb-3">Соціальні мережі</p>
+              <p className="font-medium text-sm mb-3">{t.contactInfo.social}</p>
               <div className="flex gap-3">
                 <a
                   href={settings.contact_social_twitter}
@@ -138,41 +159,59 @@ export function ContactUs() {
                 <div className="grid sm:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-1.5">
-                      Імʼя
+                      {t.contactForm.name}
                     </label>
-                    <input type="text" id="name" name="name" required className="input-field" placeholder="Андрій Петренко" />
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      className="input-field"
+                      placeholder={t.contactForm.namePlaceholder}
+                    />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-1.5">
-                      Робоча пошта
+                      {t.contactForm.email}
                     </label>
-                    <input type="email" id="email" name="email" required className="input-field" placeholder="name@company.com" />
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      className="input-field"
+                      placeholder={t.contactForm.emailPlaceholder}
+                    />
                   </div>
                 </div>
 
                 <div className="mb-4">
                   <label htmlFor="company" className="block text-sm font-medium mb-1.5">
-                    Компанія
+                    {t.contactForm.company}
                   </label>
-                  <input type="text" id="company" name="company" className="input-field" placeholder="Назва компанії" />
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    className="input-field"
+                    placeholder={t.contactForm.companyPlaceholder}
+                  />
                 </div>
 
                 <div className="mb-4">
                   <label htmlFor="topic" className="block text-sm font-medium mb-1.5">
-                    Тема звернення
+                    {t.contactForm.topic}
                   </label>
                   <select id="topic" name="topic" className="input-field">
-                    <option>Запит на демо</option>
-                    <option>Питання щодо тарифів</option>
-                    <option>Технічна підтримка</option>
-                    <option>Партнерство</option>
-                    <option>Інше</option>
+                    {t.contactForm.topicOptions.map((option) => (
+                      <option key={option}>{option}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div className="mb-6">
                   <label htmlFor="message" className="block text-sm font-medium mb-1.5">
-                    Повідомлення
+                    {t.contactForm.message}
                   </label>
                   <textarea
                     id="message"
@@ -180,7 +219,7 @@ export function ContactUs() {
                     required
                     rows={5}
                     className="input-field resize-none"
-                    placeholder="Розкажіть коротко про вашу задачу..."
+                    placeholder={t.contactForm.messagePlaceholder}
                   ></textarea>
                 </div>
 
@@ -190,7 +229,7 @@ export function ContactUs() {
                 </label>
 
                 <button type="submit" className="w-full px-6 py-3 font-medium btn-primary">
-                  Надіслати повідомлення
+                  {t.contactForm.submit}
                 </button>
               </form>
             ) : (

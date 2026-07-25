@@ -3,15 +3,16 @@
  *
  * БЕКЕНД зібраний через звичайні плагіни адмінки — без жодного кастомного PHP:
  *  - Custom Post Type UI — реєструє типи записів (pav_faq, pav_team, pav_pricing,
- *    pav_feature, pav_stat, pav_logo, pav_testimonial) з увімкненим REST API.
+ *    pav_feature, pav_stat, pav_logo, pav_testimonial, pav_settings) з увімкненим REST API.
  *  - ACF (Advanced Custom Fields) — додає поля до кожного типу; кожна група полів
  *    має "Show in REST API" = увімкнено, тому дані приходять в об'єкті `acf`.
  *  - Одинична (не список) інформація сайту (Hero, About, Contact, Footer тощо)
- *    зберігається в ACF-полях однієї звичайної Сторінки зі слагом "site-settings".
+ *    зберігається в ACF-полях запису типу pav_settings.
  *
- * Через те, що на бекенді немає кастомного коду, сортування (menu_order) і
- * фільтрацію за сторінкою (pav_feature/pav_testimonial) ми свідомо робимо
- * ТУТ, на клієнті — так само надійно, а бекенд лишається на 100% no-code.
+ * Через те, що на бекенді немає кастомного коду, сортування (menu_order),
+ * фільтрацію за сторінкою (pav_feature/pav_testimonial) і фільтрацію за
+ * мовою (lang) ми свідомо робимо ТУТ, на клієнті — так само надійно,
+ * а бекенд лишається на 100% no-code.
  *
  * Базовий URL:
  * - Локально Vite сам проксує "/wp-json" на WordPress (див. vite.config.ts) —
@@ -19,6 +20,8 @@
  * - У проді React і WordPress на одному сервері — теж відносний шлях "/wp-json".
  * - Якщо колись знадобиться інша адреса — можна перевизначити через VITE_WP_API_URL.
  */
+
+import type { Lang } from "../i18n/translations";
 
 const WP_BASE_URL: string =
   (import.meta.env.VITE_WP_API_URL as string | undefined)?.replace(/\/$/, "") ||
@@ -135,20 +138,42 @@ function acfBool(post: RawAcfPost, key: string): boolean {
   return post.acf?.[key] === true;
 }
 
-// ---------- Публічні функції для компонентів (сигнатури не змінювались) ----------
+/**
+ * Мова запису. Якщо поле "lang" не заповнене (старий контент, створений
+ * до додавання мультимовності) — вважаємо його українським за замовчуванням,
+ * щоб нічого не "зникло" після оновлення.
+ */
+function acfLang(post: RawAcfPost): Lang {
+  const v = post.acf?.["lang"];
+  return v === "en" ? "en" : "uk";
+}
 
-export async function getFaqs(): Promise<WpFaqItem[]> {
-  const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-faq?${listQuery()}&_fields=id,title,content`);
-  return posts.map((p) => ({
+/**
+ * Фільтрує масив "сирих" записів за мовою. Якщо для запитаної мови
+ * взагалі немає жодного запису (наприклад, English контент ще не додали
+ * в WordPress) — тихо повертаємо українську версію замість порожнього
+ * списку, щоб перемикач мов не показував пустий сайт завчасно.
+ */
+function filterByLang(posts: RawAcfPost[], lang: Lang): RawAcfPost[] {
+  const matched = posts.filter((p) => acfLang(p) === lang);
+  if (matched.length > 0) return matched;
+  return posts.filter((p) => acfLang(p) === "uk");
+}
+
+// ---------- Публічні функції для компонентів ----------
+
+export async function getFaqs(lang: Lang = "uk"): Promise<WpFaqItem[]> {
+  const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-faq?${listQuery()}&_fields=id,title,content,acf`);
+  return filterByLang(posts, lang).map((p) => ({
     id: p.id,
     question: stripHtml(p.title.rendered),
     answer: stripHtml(p.content?.rendered),
   }));
 }
 
-export async function getTeam(): Promise<WpTeamMember[]> {
+export async function getTeam(lang: Lang = "uk"): Promise<WpTeamMember[]> {
   const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-team?${listQuery()}&_fields=id,title,acf`);
-  return posts.map((p) => ({
+  return filterByLang(posts, lang).map((p) => ({
     id: p.id,
     name: stripHtml(p.title.rendered),
     role: acfStr(p, "role"),
@@ -156,9 +181,9 @@ export async function getTeam(): Promise<WpTeamMember[]> {
   }));
 }
 
-export async function getPricingPlans(): Promise<WpPricingPlan[]> {
+export async function getPricingPlans(lang: Lang = "uk"): Promise<WpPricingPlan[]> {
   const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-pricing?${listQuery()}&_fields=id,title,acf`);
-  return posts.map((p) => ({
+  return filterByLang(posts, lang).map((p) => ({
     id: p.id,
     name: stripHtml(p.title.rendered),
     price: acfStr(p, "price"),
@@ -173,12 +198,15 @@ export async function getPricingPlans(): Promise<WpPricingPlan[]> {
 
 /**
  * Картки-можливості. Оскільки на бекенді немає кастомного PHP-фільтра за
- * "pav_page", тягнемо всі записи одним запитом і фільтруємо тут — записів
- * там небагато (десяток), тож зайвого навантаження це не створює.
+ * "pav_page"/"lang", тягнемо всі записи одним запитом і фільтруємо тут —
+ * записів там небагато (десяток), тож зайвого навантаження це не створює.
  */
-export async function getFeatureCards(page?: "dashboard" | "services" | "about"): Promise<WpFeatureCard[]> {
+export async function getFeatureCards(
+  page?: "dashboard" | "services" | "about",
+  lang: Lang = "uk",
+): Promise<WpFeatureCard[]> {
   const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-feature?${listQuery()}&_fields=id,title,content,acf`);
-  const mapped = posts.map((p) => ({
+  const mapped = filterByLang(posts, lang).map((p) => ({
     id: p.id,
     title: stripHtml(p.title.rendered),
     description: stripHtml(p.content?.rendered),
@@ -189,23 +217,24 @@ export async function getFeatureCards(page?: "dashboard" | "services" | "about")
   return page ? mapped.filter((f) => f.page === page) : mapped;
 }
 
-export async function getStats(): Promise<WpStat[]> {
+export async function getStats(lang: Lang = "uk"): Promise<WpStat[]> {
   const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-stat?${listQuery()}&_fields=id,title,acf`);
-  return posts.map((p) => ({
+  return filterByLang(posts, lang).map((p) => ({
     id: p.id,
     value: stripHtml(p.title.rendered),
     label: acfStr(p, "stat_label"),
   }));
 }
 
+/** Логотипи клієнтів — самі назви компаній не перекладаються, мова тут не потрібна. */
 export async function getLogos(): Promise<WpLogo[]> {
   const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-logo?${listQuery()}&_fields=id,title`);
   return posts.map((p) => ({ id: p.id, name: stripHtml(p.title.rendered) }));
 }
 
-export async function getTestimonials(): Promise<WpTestimonial[]> {
+export async function getTestimonials(lang: Lang = "uk"): Promise<WpTestimonial[]> {
   const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-testimonial?${listQuery()}&_fields=id,title,content,acf`);
-  return posts.map((p) => ({
+  return filterByLang(posts, lang).map((p) => ({
     id: p.id,
     quote: stripHtml(p.content?.rendered),
     authorName: stripHtml(p.title.rendered),
@@ -214,14 +243,13 @@ export async function getTestimonials(): Promise<WpTestimonial[]> {
 }
 
 /**
- * Всі "одиничні" тексти сайту зберігаються в ACF-полях ОДНОГО запису типу
- * pav_settings (окремий тип, а не сторінка — щоб не прив'язуватись до
- * конкретного ID). Беремо перший (і єдиний) запис і повертаємо його
- * acf-об'єкт як є (ключі полів у ACF = ключі, яких очікують компоненти).
+ * Всі "одиничні" тексти сайту зберігаються в ACF-полях запису(ів) типу
+ * pav_settings — по одному запису на мову (розрізняються полем "lang").
  */
-export async function getSiteSettings(): Promise<WpSiteSettings> {
-  const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-settings?per_page=1&_fields=id,acf`);
-  const settings = posts[0]?.acf ?? {};
+export async function getSiteSettings(lang: Lang = "uk"): Promise<WpSiteSettings> {
+  const posts = await wpFetch<RawAcfPost[]>(`/wp/v2/pav-settings?per_page=10&_fields=id,acf`);
+  const matches = filterByLang(posts, lang);
+  const settings = (matches[0] ?? posts[0])?.acf ?? {};
   const result: WpSiteSettings = {};
   for (const [key, value] of Object.entries(settings)) {
     if (typeof value === "string") result[key] = value;
