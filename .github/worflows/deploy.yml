@@ -1,67 +1,54 @@
-name: Deploy to Vercel
+name: Deploy to InfinityFree
 
+# Запускається автоматично при кожному пуші в main.
+# Можна також запустити вручну через вкладку "Actions" на GitHub (workflow_dispatch).
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  workflow_dispatch:
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run type-check
-      # - run: npm run test
+      - name: Отримати код репозиторію
+        uses: actions/checkout@v4
 
-  deploy-preview:
-    if: github.event_name == 'pull_request'
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Встановити Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install -g vercel@latest
-      - run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-      - run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy
-        id: deploy
+
+      - name: Встановити залежності й зібрати React
+        working-directory: company-web-app
         run: |
-          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$url" >> "$GITHUB_OUTPUT"
-      - name: Comment PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🔗 Preview deploy: ${{ steps.deploy.outputs.url }}`
-            })
+          npm ci
+          npm run build
 
-  deploy-production:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Залити React (dist/) у корінь сайту (htdocs)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          node-version: 20
-      - run: npm install -g vercel@latest
-      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: company-web-app/dist/
+          server-dir: ./htdocs/
+          # Безпечно: за замовчуванням action НЕ видаляє файли на сервері,
+          # яких немає локально — тому wp-admin/wp-content/.htaccess
+          # залишаються недоторканими.
+          exclude: |
+            **/wp-admin/**
+            **/wp-content/**
+            **/wp-includes/**
+            **/.htaccess
+            **/wp-config.php
+            **/*.php
+
+      - name: Залити код плагіна pavit-acf-bootstrap
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: wordpress-plugin/pavit-acf-bootstrap/
+          server-dir: ./htdocs/wp-content/plugins/pavit-acf-bootstrap/
