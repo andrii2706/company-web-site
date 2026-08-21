@@ -118,12 +118,14 @@ h1, h2, h3, .font-display {
 .pav-label .bar { width: 1.5px; height: 16px; background: #c5a059; opacity: .8; flex-shrink: 0; }
 
 .pav-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 1px;
   padding: 15px 30px;
   border-radius: 2px;
-  transition: all .25s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -131,24 +133,64 @@ h1, h2, h3, .font-display {
   text-transform: none;
   border: 1px solid transparent;
   cursor: pointer;
+  transition:
+    transform .35s cubic-bezier(.16,1,.3,1),
+    box-shadow .35s cubic-bezier(.16,1,.3,1),
+    border-color .3s ease,
+    color .3s ease;
 }
+.pav-btn:active { transform: scale(0.96); transition-duration: .12s; }
+
+/* Заливка "напливає" зліва направо при ховері — замість різкої зміни кольору */
+.pav-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.pav-btn:hover::before, .pav-btn:focus-visible::before { transform: scaleX(1); }
+
 .pav-btn-primary {
   background: #c5a059;
   color: #141414;
   border-color: #c5a059;
 }
+.pav-btn-primary::before { background: #e0bd7a; }
 .pav-btn-primary:hover, .pav-btn-primary:focus-visible {
-  background: #e0bd7a; border-color: #e0bd7a; transform: translateY(-1px);
+  border-color: #e0bd7a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -8px rgba(197,160,89,0.55);
 }
 .pav-btn-ghost {
   border-color: rgba(197,160,89,0.35);
   color: #f0ead9;
   background: transparent;
 }
+.pav-btn-ghost::before { background: rgba(197,160,89,0.1); }
 .pav-btn-ghost:hover, .pav-btn-ghost:focus-visible {
-  border-color: #c5a059; color: #e0bd7a;
+  border-color: #c5a059;
+  color: #e0bd7a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -10px rgba(197,160,89,0.3);
 }
 .pav-btn-sm { padding: 9px 18px; font-size: 12px; }
+
+/* Стрілка "→" у кнопках — плавно висувається вправо при ховері */
+.pav-btn-arrow {
+  display: inline-block;
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+.pav-btn:hover .pav-btn-arrow, .pav-btn:focus-visible .pav-btn-arrow {
+  transform: translateX(5px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pav-btn, .pav-btn::before, .pav-btn-arrow { transition: none !important; }
+  .pav-btn:hover, .pav-btn:focus-visible { transform: none !important; }
+}
 
 .pav-nav-link {
   font-family: var(--font-mono);
@@ -158,16 +200,62 @@ h1, h2, h3, .font-display {
   text-transform: uppercase;
   position: relative;
   padding-bottom: 4px;
-  transition: color .25s ease;
+  display: inline-block;
+  transition: color .3s cubic-bezier(.4,0,.2,1), transform .3s cubic-bezier(.16,1,.3,1);
 }
 .pav-nav-link:hover, .pav-nav-link:focus-visible, .pav-nav-link.active { color: #e0bd7a; }
+.pav-nav-link:hover, .pav-nav-link:focus-visible { transform: translateY(-1px); }
 .pav-nav-link::after {
   content:'';
   position:absolute; left:0; bottom:0;
-  width:0; height:1px; background: #c5a059;
-  transition: width .3s ease;
+  width:100%; height:1px; background: #c5a059;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
 }
-.pav-nav-link:hover::after, .pav-nav-link:focus-visible::after, .pav-nav-link.active::after { width: 100%; }
+.pav-nav-link:hover::after, .pav-nav-link:focus-visible::after, .pav-nav-link.active::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .pav-nav-link, .pav-nav-link::after { transition: none !important; }
+  .pav-nav-link:hover, .pav-nav-link:focus-visible { transform: none !important; }
+}
+
+/* ---------- Мобільне меню: гамбургер → хрестик, плавне розкриття панелі ---------- */
+.pav-burger { width: 22px; height: 16px; position: relative; }
+.pav-burger span {
+  position: absolute; left: 0; width: 100%; height: 2px;
+  background: currentColor; border-radius: 1px;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .25s ease, top .35s cubic-bezier(.16,1,.3,1);
+}
+.pav-burger span:nth-child(1) { top: 0; }
+.pav-burger span:nth-child(2) { top: 7px; }
+.pav-burger span:nth-child(3) { top: 14px; }
+.pav-burger.is-open span:nth-child(1) { top: 7px; transform: rotate(45deg); }
+.pav-burger.is-open span:nth-child(2) { opacity: 0; }
+.pav-burger.is-open span:nth-child(3) { top: 7px; transform: rotate(-45deg); }
+
+.pav-mobile-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .4s cubic-bezier(.16,1,.3,1), opacity .3s ease;
+}
+.pav-mobile-panel.is-open { grid-template-rows: 1fr; opacity: 1; }
+.pav-mobile-panel > div { overflow: hidden; }
+.pav-mobile-panel .pav-mobile-item {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.pav-mobile-panel.is-open .pav-mobile-item { opacity: 1; transform: translateY(0); }
+.pav-mobile-panel.is-open .pav-mobile-item:nth-child(1) { transition-delay: .04s; }
+.pav-mobile-panel.is-open .pav-mobile-item:nth-child(2) { transition-delay: .08s; }
+.pav-mobile-panel.is-open .pav-mobile-item:nth-child(3) { transition-delay: .12s; }
+.pav-mobile-panel.is-open .pav-mobile-item:nth-child(4) { transition-delay: .16s; }
+.pav-mobile-panel.is-open .pav-mobile-item:nth-child(5) { transition-delay: .2s; }
+.pav-mobile-panel.is-open .pav-mobile-item:nth-child(6) { transition-delay: .24s; }
+@media (prefers-reduced-motion: reduce) {
+  .pav-burger span, .pav-mobile-panel, .pav-mobile-item { transition: none !important; }
+}
 
 :focus-visible {
   outline: 1.5px solid #c5a059;

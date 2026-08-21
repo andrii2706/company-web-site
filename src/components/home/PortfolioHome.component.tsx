@@ -219,7 +219,7 @@ const LABELS = {
     expertiseTitle: "Де ми додаємо найбільше цінності.",
     workLabel: "Процес",
     contactLabel: "Контакти",
-    emailCta: "Написати нам →",
+    emailCta: "Написати нам",
     heroCtaGhostAnchor: "#stack",
   },
   en: {
@@ -230,7 +230,7 @@ const LABELS = {
     expertiseTitle: "Where we add the most value.",
     workLabel: "Process",
     contactLabel: "Contact",
-    emailCta: "Email us →",
+    emailCta: "Email us",
     heroCtaGhostAnchor: "#stack",
   },
 };
@@ -307,7 +307,7 @@ export function PortfolioHome() {
             <p className="max-w-[480px] text-base-content/70 text-[17.5px] leading-[1.7] mb-10">{settings.hero_subtitle}</p>
             <div className="flex flex-wrap gap-4 mb-14">
               <a className="pav-btn pav-btn-primary" href="#contact">
-                {settings.hero_cta_primary} →
+                {settings.hero_cta_primary} <span className="pav-btn-arrow">→</span>
               </a>
               <a className="pav-btn pav-btn-ghost" href={l.heroCtaGhostAnchor}>
                 {settings.hero_cta_secondary}
@@ -434,7 +434,7 @@ export function PortfolioHome() {
           <h2 className="font-display font-normal text-[clamp(2.1rem,5vw,3.5rem)] text-base-content">{settings.contact_title}</h2>
           <p className="text-base-content/70 text-[17px] my-6 mx-auto max-w-[460px]">{settings.contact_subtitle}</p>
           <a className="pav-btn pav-btn-primary" href={`mailto:${settings.contact_email}`}>
-            {l.emailCta}
+            {l.emailCta} <span className="pav-btn-arrow">→</span>
           </a>
           <div className="flex justify-center gap-8 flex-wrap mt-[50px]">
             <a href={settings.contact_social_linkedin} className="pav-contact-link">

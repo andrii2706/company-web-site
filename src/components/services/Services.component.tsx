@@ -164,7 +164,7 @@ const FALLBACK_FAQS: Record<"uk" | "en", WpFaqItem[]> = {
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="collapse collapse-plus bg-base-200 border border-primary/15 rounded-sm">
+    <div className="collapse collapse-plus bg-base-200 border border-primary/15 rounded-sm transition-colors duration-300 hover:border-primary/30">
       <input
         type="checkbox"
         checked={open}
@@ -204,7 +204,7 @@ export function Services() {
       <section className="max-w-[1180px] mx-auto px-6 pb-24">
         <div className="grid md:grid-cols-2 gap-6">
           {features.map((f) => (
-            <div key={f.id} className="bg-base-200 border border-primary/15 rounded-sm p-8 transition-colors hover:border-primary/35">
+            <div key={f.id} className="bg-base-200 border border-primary/15 rounded-sm p-8 transition-all duration-300 ease-out hover:border-primary/35 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5">
               <FeatureIcon icon={f.icon} />
               <h3 className="font-display font-semibold text-xl mb-3 text-base-content">
                 {f.title}

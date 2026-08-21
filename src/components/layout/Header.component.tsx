@@ -99,61 +99,54 @@ export function Header() {
           onClick={() => setMenuOpen((open) => !open)}
           className="md:hidden p-2 text-base-content"
           aria-label="Menu"
+          aria-expanded={menuOpen}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M3 6h18M3 12h18M3 18h18"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <span className={`pav-burger ${menuOpen ? "is-open" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
         </button>
       </div>
 
-      {menuOpen && (
-        <div className="md:hidden border-t border-primary/15 px-6 py-4 space-y-3">
-          <NavLink
-            to={localizePath("/")}
-            end
-            className={navLinkClass}
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="block">{t.nav.home}</span>
-          </NavLink>
-          <NavLink
-            to={localizePath("/about-us")}
-            className={navLinkClass}
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="block">{t.nav.about}</span>
-          </NavLink>
-          <NavLink
-            to={localizePath("/services")}
-            className={navLinkClass}
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="block">{t.nav.services}</span>
-          </NavLink>
-          <NavLink
-            to={localizePath("/contact-us")}
-            className={navLinkClass}
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="block">{t.nav.contact}</span>
-          </NavLink>
-          <div className="pt-2">
-            <LanguageSwitch />
+      <div className={`pav-mobile-panel md:hidden ${menuOpen ? "is-open" : ""}`}>
+        <div>
+          <div className="border-t border-primary/15 px-6 py-4 space-y-3">
+            <div className="pav-mobile-item">
+              <NavLink to={localizePath("/")} end className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                <span className="block">{t.nav.home}</span>
+              </NavLink>
+            </div>
+            <div className="pav-mobile-item">
+              <NavLink to={localizePath("/about-us")} className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                <span className="block">{t.nav.about}</span>
+              </NavLink>
+            </div>
+            <div className="pav-mobile-item">
+              <NavLink to={localizePath("/services")} className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                <span className="block">{t.nav.services}</span>
+              </NavLink>
+            </div>
+            <div className="pav-mobile-item">
+              <NavLink to={localizePath("/contact-us")} className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                <span className="block">{t.nav.contact}</span>
+              </NavLink>
+            </div>
+            <div className="pav-mobile-item pt-2">
+              <LanguageSwitch />
+            </div>
+            <div className="pav-mobile-item">
+              <Link
+                to={localizePath("/contact-us")}
+                onClick={() => setMenuOpen(false)}
+                className="pav-btn pav-btn-primary w-full mt-3"
+              >
+                {t.header.tryFree}
+              </Link>
+            </div>
           </div>
-          <Link
-            to={localizePath("/contact-us")}
-            onClick={() => setMenuOpen(false)}
-            className="pav-btn pav-btn-primary w-full mt-3"
-          >
-            {t.header.tryFree}
-          </Link>
         </div>
-      )}
+      </div>
     </header>
   );
 }

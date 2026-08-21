@@ -218,7 +218,7 @@ export function AboutUs() {
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {principles.map((p) => (
-            <div key={p.id} className="bg-base-200 border border-primary/15 rounded-sm p-7 transition-colors hover:border-primary/35">
+            <div key={p.id} className="bg-base-200 border border-primary/15 rounded-sm p-7 transition-all duration-300 ease-out hover:border-primary/35 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5">
               <FeatureIcon icon={p.icon} size="sm" />
               <h3 className="font-display font-semibold text-lg mb-2 text-base-content">{p.title}</h3>
               <p className="text-base-content/60 text-sm leading-relaxed">{p.description}</p>
