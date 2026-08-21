@@ -164,29 +164,18 @@ const FALLBACK_FAQS: Record<"uk" | "en", WpFaqItem[]> = {
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="card overflow-hidden">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left"
-      >
-        <span className="font-medium text-sm">{question}</span>
-        <span
-          className="text-xl text-[#9C9186] transition-transform"
-          style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
-        >
-          +
-        </span>
-      </button>
-      <div
-        style={{
-          maxHeight: open ? "200px" : "0px",
-          overflow: "hidden",
-          transition: "max-height 0.25s ease",
-        }}
-      >
-        <p className="px-6 pb-5 text-sm text-[#4B4238] leading-relaxed">
-          {answer}
-        </p>
+    <div className="collapse collapse-plus bg-base-200 border border-primary/15 rounded-sm">
+      <input
+        type="checkbox"
+        checked={open}
+        onChange={() => setOpen((o) => !o)}
+        aria-label={question}
+      />
+      <div className="collapse-title font-medium text-sm text-base-content pr-10">
+        {question}
+      </div>
+      <div className="collapse-content">
+        <p className="text-sm text-base-content/70 leading-relaxed">{answer}</p>
       </div>
     </div>
   );
@@ -204,29 +193,29 @@ export function Services() {
   return (
     <>
       <section className="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
-        <h1 className="font-display text-4xl md:text-5xl font-semibold leading-[1.15] mb-6">
+        <h1 className="font-display font-normal text-4xl md:text-5xl leading-[1.05] tracking-[-0.5px] mb-6 text-base-content">
           {settings.services_title}
         </h1>
-        <p className="text-[#4B4238] text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="text-base-content/70 text-lg leading-relaxed max-w-2xl mx-auto">
           {settings.services_subtitle}
         </p>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+      <section className="max-w-[1180px] mx-auto px-6 pb-24">
         <div className="grid md:grid-cols-2 gap-6">
           {features.map((f) => (
-            <div key={f.id} className="card p-8">
+            <div key={f.id} className="bg-base-200 border border-primary/15 rounded-sm p-8 transition-colors hover:border-primary/35">
               <FeatureIcon icon={f.icon} />
-              <h3 className="font-display font-semibold text-xl mb-3">
+              <h3 className="font-display font-semibold text-xl mb-3 text-base-content">
                 {f.title}
               </h3>
-              <p className="text-[#4B4238] text-sm leading-relaxed mb-5">
+              <p className="text-base-content/60 text-sm leading-relaxed mb-5">
                 {f.description}
               </p>
               {f.featuresList.length > 0 && (
                 <ul className="space-y-2 text-sm">
                   {f.featuresList.map((item) => (
-                    <li key={item} className="flex items-center gap-2">
+                    <li key={item} className="flex items-center gap-2 text-base-content/80">
                       <CheckIcon />
                       {item}
                     </li>
@@ -238,13 +227,13 @@ export function Services() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="rounded-3xl bg-[#221D17] px-8 py-14 md:py-16 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+      <section className="max-w-[1180px] mx-auto px-6 pb-24">
+        <div className="rounded-md bg-base-200 border border-primary/20 px-8 py-14 md:py-16 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
           <div>
-            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+            <h2 className="font-display font-normal text-3xl md:text-4xl text-base-content mb-4">
               {settings.quick_contact_title}
             </h2>
-            <p className="text-[#B0A69A] mb-2 max-w-md">
+            <p className="text-muted mb-2 max-w-md">
               {settings.quick_contact_subtitle}
             </p>
           </div>
@@ -252,13 +241,13 @@ export function Services() {
           <div className="flex flex-col gap-3">
             <Link
               to={localizePath("/contact-us")}
-              className="w-full px-6 py-3.5 font-medium btn-primary text-center"
+              className="pav-btn pav-btn-primary w-full"
             >
               {settings.quick_contact_button}
             </Link>
             <a
               href={`mailto:${settings.contact_email}`}
-              className="w-full px-6 py-3.5 font-medium text-center rounded-xl border border-[#4A3D30] text-white hover:bg-[#2E251D] transition-colors flex items-center justify-center gap-2"
+              className="pav-btn pav-btn-ghost w-full"
             >
               <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                 <path d="M3 5L10 11L17 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -270,8 +259,8 @@ export function Services() {
         </div>
       </section>
 
-      <section className="max-w-3xl mx-auto px-6 py-24">
-        <h2 className="font-display text-3xl font-semibold text-center mb-12">
+      <section className="max-w-3xl mx-auto px-6 py-32">
+        <h2 className="font-display font-normal text-3xl md:text-4xl text-center mb-12 text-base-content">
           {settings.faq_title}
         </h2>
         <div className="space-y-3">

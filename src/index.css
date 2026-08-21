@@ -1,9 +1,70 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@plugin "daisyui" {
+  themes: pavit --default;
+}
+
+/*
+ * Фірмова тема PAV IT: темний фон + золотий акцент, взяті напряму
+ * з референсного сайту-візитки (pav-it-portfolio.html).
+ */
+@plugin "daisyui/theme" {
+  name: "pavit";
+  default: true;
+  prefersdark: false;
+  color-scheme: dark;
+
+  --color-base-100: #141414;
+  --color-base-200: #1a1a19;
+  --color-base-300: #1f1f1d;
+  --color-base-content: #f0ead9;
+
+  --color-primary: #c5a059;
+  --color-primary-content: #141414;
+
+  --color-secondary: #e0bd7a;
+  --color-secondary-content: #141414;
+
+  --color-accent: #c5a059;
+  --color-accent-content: #141414;
+
+  --color-neutral: #1f1f1d;
+  --color-neutral-content: #f0ead9;
+
+  --color-info: #c5a059;
+  --color-info-content: #141414;
+
+  --color-success: #8fce8a;
+  --color-success-content: #141414;
+
+  --color-warning: #e0bd7a;
+  --color-warning-content: #141414;
+
+  --color-error: #d98a7a;
+  --color-error-content: #141414;
+
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'Inter', 'Segoe UI', sans-serif;
+  --font-display: 'Montserrat', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+
+  --color-gold: #c5a059;
+  --color-gold-bright: #e0bd7a;
+  --color-ink: #f0ead9;
+  --color-muted: #8f8a7d;
+  --color-muted-2: #5f5b52;
 }
 
 * {
@@ -11,8 +72,8 @@
 }
 
 body {
-  background: #FAF7F2;
-  color: #221D17;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -21,59 +82,199 @@ h1, h2, h3, .font-display {
   font-family: var(--font-display);
 }
 
-.btn-primary {
-  background: #8A5A2B;
-  color: white;
-  border-radius: 12px;
-  transition: background 0.15s ease, transform 0.1s ease;
-}
-.btn-primary:hover { background: #6B4520; }
-.btn-primary:active { transform: scale(0.98); }
+/* =========================================================================
+   Фірмові UI-примітиви взяті 1:1 з референсу (pav-it-portfolio.html):
+   гострі кнопки з моно-шрифтом, лейбли секцій з рискою, nav-посилання
+   з підкресленням, що виростає при наведенні.
+   ========================================================================= */
 
-.btn-secondary {
-  background: white;
-  color: #221D17;
-  border: 1px solid #E6DFD3;
-  border-radius: 12px;
-  transition: border-color 0.15s ease, background 0.15s ease;
+.pav-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #8f8a7d;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.btn-secondary:hover { border-color: #8A5A2B; background: #F4EBDD; }
-
-.card {
-  background: #FFFFFF;
-  border: 1px solid #E6DFD3;
-  border-radius: 20px;
-  box-shadow: 0 1px 2px rgba(24,24,27,0.04);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.card:hover {
-  box-shadow: 0 12px 28px rgba(24,24,27,0.08);
-  transform: translateY(-2px);
+.pav-eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #6fbf73;
+  box-shadow: 0 0 0 3px rgba(111,191,115,0.15);
+  flex-shrink: 0;
 }
 
-.nav-link {
-  color: #4B4238;
-  font-weight: 500;
-  transition: color 0.15s ease;
+.pav-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 3px;
+  color: #c5a059;
+  text-transform: uppercase;
+}
+.pav-label .bar { width: 1.5px; height: 16px; background: #c5a059; opacity: .8; flex-shrink: 0; }
+
+.pav-btn {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 15px 30px;
+  border-radius: 2px;
+  transition: all .25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.pav-btn-primary {
+  background: #c5a059;
+  color: #141414;
+  border-color: #c5a059;
+}
+.pav-btn-primary:hover, .pav-btn-primary:focus-visible {
+  background: #e0bd7a; border-color: #e0bd7a; transform: translateY(-1px);
+}
+.pav-btn-ghost {
+  border-color: rgba(197,160,89,0.35);
+  color: #f0ead9;
+  background: transparent;
+}
+.pav-btn-ghost:hover, .pav-btn-ghost:focus-visible {
+  border-color: #c5a059; color: #e0bd7a;
+}
+.pav-btn-sm { padding: 9px 18px; font-size: 12px; }
+
+.pav-nav-link {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 1.5px;
+  color: #8f8a7d;
+  text-transform: uppercase;
   position: relative;
+  padding-bottom: 4px;
+  transition: color .25s ease;
 }
-.nav-link:hover { color: #221D17; }
-.nav-link.active { color: #8A5A2B; }
+.pav-nav-link:hover, .pav-nav-link:focus-visible, .pav-nav-link.active { color: #e0bd7a; }
+.pav-nav-link::after {
+  content:'';
+  position:absolute; left:0; bottom:0;
+  width:0; height:1px; background: #c5a059;
+  transition: width .3s ease;
+}
+.pav-nav-link:hover::after, .pav-nav-link:focus-visible::after, .pav-nav-link.active::after { width: 100%; }
 
-.input-field {
-  background: white;
-  border: 1px solid #E6DFD3;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-size: 14px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  width: 100%;
+:focus-visible {
+  outline: 1.5px solid #c5a059;
+  outline-offset: 3px;
 }
-.input-field:focus {
-  outline: none;
-  border-color: #8A5A2B;
-  box-shadow: 0 0 0 3px rgba(138,90,43,0.14);
+
+/* ---------- Фонова текстура-сітка (з референсу) ---------- */
+.pav-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(197,160,89,0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197,160,89,0.16) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 10%, transparent 75%);
 }
+
+/* ---------- Reveal-on-scroll (з референсу) ---------- */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Stack grid (4 колонки, роздільники — лінії golden) ---------- */
+.pav-stack-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(197,160,89,0.16);
+  border: 1px solid rgba(197,160,89,0.16);
+}
+.pav-stack-col { background: #141414; padding: 34px 28px; }
+.pav-stack-col h4 {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 1.5px;
+  color: #c5a059;
+  text-transform: uppercase;
+  margin: 0 0 22px;
+}
+.pav-stack-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
+.pav-stack-col li { font-size: 15px; color: #f0ead9; font-weight: 400; }
+.pav-stack-col li small { display: block; color: #5f5b52; font-size: 11.5px; margin-top: 2px; font-family: var(--font-mono); }
+@media (max-width: 980px) { .pav-stack-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .pav-stack-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Expertise list rows ---------- */
+.pav-expertise-list { border-top: 1px solid rgba(197,160,89,0.16); }
+.pav-exp-row {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  padding: 36px 0;
+  border-bottom: 1px solid rgba(197,160,89,0.16);
+  transition: background .3s ease;
+}
+.pav-exp-row:hover { background: rgba(197,160,89,0.03); }
+.pav-exp-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 22px; margin: 0; color: #f0ead9; }
+.pav-exp-row h3 .n { font-family: var(--font-mono); font-size: 13px; color: #c5a059; margin-right: 14px; }
+.pav-exp-row p { margin: 0; color: #8f8a7d; font-size: 15.5px; max-width: 620px; }
+@media (max-width: 720px) { .pav-exp-row { grid-template-columns: 1fr; gap: 12px; } }
+
+/* ---------- Timeline (experience) ---------- */
+.pav-t-row { display: grid; grid-template-columns: 140px 1px 1fr; gap: 34px; padding: 32px 0; }
+.pav-t-row .when { font-family: var(--font-mono); font-size: 12.5px; color: #8f8a7d; letter-spacing: .5px; padding-top: 4px; }
+.pav-t-row .rail { background: rgba(197,160,89,0.35); position: relative; }
+.pav-t-row .rail::before {
+  content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+  width: 8px; height: 8px; border-radius: 50%; background: #c5a059;
+}
+.pav-t-row .content h3 { font-family: var(--font-display); font-weight: 500; font-size: 19px; margin: 0 0 8px; color: #f0ead9; }
+.pav-t-row .content .role { font-family: var(--font-mono); font-size: 12px; color: #c5a059; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.pav-t-row .content p { margin: 0; color: #8f8a7d; font-size: 15px; max-width: 600px; }
+.pav-t-row + .pav-t-row { border-top: 1px solid rgba(197,160,89,0.16); }
+@media (max-width: 720px) { .pav-t-row { grid-template-columns: 1px 1fr; } .pav-t-row .when { display: none; } }
+
+/* ---------- Credentials list (About section) ---------- */
+.pav-credentials { list-style: none; padding: 0; margin: 34px 0 0; display: flex; flex-direction: column; gap: 16px; }
+.pav-credentials li {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  color: #8f8a7d;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(197,160,89,0.16);
+}
+.pav-credentials li span.tag { color: #c5a059; min-width: 18px; }
+.pav-credentials li b { color: #f0ead9; font-weight: 500; font-family: var(--font-sans); font-size: 15px; }
+
+/* ---------- Contact links row ---------- */
+.pav-contact-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #8f8a7d;
+  letter-spacing: .5px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: all .25s ease;
+}
+.pav-contact-link:hover, .pav-contact-link:focus-visible { color: #e0bd7a; border-color: #c5a059; }
 
 .float-card {
   animation: float 6s ease-in-out infinite;
@@ -83,36 +284,35 @@ h1, h2, h3, .font-display {
   50% { transform: translateY(-10px); }
 }
 
-/* Консоль коду — темна панель у тон коричневої палітри сайту (не чорна,
-   а глибокий "еспресо" #2A211A, щоб гармоніювати з рештою дизайну). */
+/* Консоль коду — темна панель у фірмовій золотій гамі. */
 .code-console {
-  background: #2A211A;
-  border: 1px solid #3D3228;
+  background: #1a1a19;
+  border: 1px solid rgba(197, 160, 89, 0.16);
   border-radius: 16px;
-  box-shadow: 0 20px 48px rgba(34,29,23,0.28);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.4);
   overflow: hidden;
 }
 .code-console-bar {
-  background: #241C16;
-  border-bottom: 1px solid #3D3228;
+  background: #1f1f1d;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.16);
 }
 .code-line {
-  font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.85;
 }
-.code-kw { color: #D9A05B; }      /* ключові слова — золотисто-коричневий акцент */
-.code-fn { color: #E8C9A0; }      /* функції/методи */
-.code-str { color: #9DBF8E; }     /* рядки — приглушений зелений */
-.code-com { color: #7A6B5A; }     /* коментарі */
-.code-txt { color: #E9E0D4; }     /* звичайний текст */
-.code-dim { color: #8A7A68; }     /* приглушене */
-.code-ok { color: #7FB069; }      /* успіх */
+.code-kw { color: #e0bd7a; }
+.code-fn { color: #f0ead9; }
+.code-str { color: #c5a059; }
+.code-com { color: #5f5b52; }
+.code-txt { color: #dcd6c8; }
+.code-dim { color: #6b6558; }
+.code-ok { color: #8fce8a; }
 
 .code-cursor::after {
   content: "▍";
   animation: blink 1s step-end infinite;
-  color: #D9A05B;
+  color: #c5a059;
 }
 @keyframes blink { 50% { opacity: 0; } }
 

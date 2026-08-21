@@ -97,9 +97,9 @@ export function CodeConsole({ deployedUrl, finalStatus, buildTime, comment }: Co
       aria-label={`Консоль деплою: ${finalStatus}, ${buildTime}, ${deployedUrl}`}
     >
       <div className="code-console-bar flex items-center gap-1.5 px-4 py-3">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#4A3D30]"></span>
-        <span className="w-2.5 h-2.5 rounded-full bg-[#4A3D30]"></span>
-        <span className="w-2.5 h-2.5 rounded-full bg-[#4A3D30]"></span>
+        <span className="w-2.5 h-2.5 rounded-full bg-[#3a352c]"></span>
+        <span className="w-2.5 h-2.5 rounded-full bg-[#3a352c]"></span>
+        <span className="w-2.5 h-2.5 rounded-full bg-[#3a352c]"></span>
         <span className="code-line code-dim ml-3">deploy.ts</span>
       </div>
 
@@ -129,7 +129,7 @@ export function CodeConsole({ deployedUrl, finalStatus, buildTime, comment }: Co
         ))}
 
         <div
-          className="mt-4 pt-4 border-t border-[#3D3228] space-y-1.5"
+          className="mt-4 pt-4 border-t border-[rgba(197,160,89,0.16)] space-y-1.5"
           style={{ opacity: showResult ? 1 : 0, transition: "opacity 0.35s ease" }}
         >
           <div className="code-line flex items-center gap-2">

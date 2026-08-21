@@ -1,28 +1,11 @@
 /**
  * Копірайтер у WordPress обирає іконку зі списку (ключ рядком: "grid", "cube"...),
  * а сам SVG-дизайн лишається в коді — так неможливо випадково "зламати" вигляд сайту.
+ *
+ * Усі іконки живуть в одній фірмовій золотій гамі (замість різнокольорових
+ * бейджів), щоб тримати палітру сайту повністю в тон бренду PAV IT.
  */
 export type FeatureIconKey = "grid" | "cube" | "shield" | "clock" | "lock" | "heart" | "chart";
-
-const ICON_BG: Record<FeatureIconKey, string> = {
-  grid: "#F4EBDD",
-  cube: "#ECFDF5",
-  shield: "#FEF2F2",
-  clock: "#ECFDF5",
-  lock: "#FEF2F2",
-  heart: "#F4EBDD",
-  chart: "#FFFBEB",
-};
-
-const ICON_STROKE: Record<FeatureIconKey, string> = {
-  grid: "#8A5A2B",
-  cube: "#10B981",
-  shield: "#EF4444",
-  clock: "#10B981",
-  lock: "#EF4444",
-  heart: "#8A5A2B",
-  chart: "#F59E0B",
-};
 
 function IconSvg({ iconKey, stroke }: { iconKey: FeatureIconKey; stroke: string }) {
   switch (iconKey) {
@@ -102,8 +85,8 @@ export function FeatureIcon({
   const box = size === "sm" ? "w-11 h-11" : "w-12 h-12";
 
   return (
-    <div className={`${box} rounded-xl flex items-center justify-center mb-5`} style={{ background: ICON_BG[key] }}>
-      <IconSvg iconKey={key} stroke={ICON_STROKE[key]} />
+    <div className={`${box} rounded-sm flex items-center justify-center mb-5 bg-primary/10 border border-primary/20`}>
+      <IconSvg iconKey={key} stroke="#c5a059" />
     </div>
   );
 }
@@ -112,7 +95,7 @@ export function FeatureIcon({
 export function CheckIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="flex-shrink-0">
-      <path d="M3 8.5L6 11.5L13 4.5" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 8.5L6 11.5L13 4.5" stroke="#8fce8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

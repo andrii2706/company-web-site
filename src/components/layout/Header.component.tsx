@@ -9,21 +9,21 @@ function PavItLogo({ className = "h-11 w-auto" }: { className?: string }) {
       viewBox="0 0 220 56"
       className={className}
       role="img"
-      aria-label="ПАВ IT — IT Solutions & Technology"
+      aria-label="PAV IT — IT Solutions & Technology"
     >
       <defs>
         <style>{`
-          .brown-text { fill: #6B4520; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
-          .gold-text { fill: #B08A3E; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
+          .brown-text { fill: #f0ead9; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
+          .gold-text { fill: #c5a059; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
           .brand-title { font-size: 26px; font-weight: 500; letter-spacing: 1px; }
           .brand-subtitle { font-size: 5.5px; font-weight: 600; letter-spacing: 1.6px; }
-          .line-separator { stroke: #C5A059; stroke-width: 1.6; stroke-linecap: round; }
+          .line-separator { stroke: #c5a059; stroke-width: 1.6; stroke-linecap: round; }
         `}</style>
       </defs>
 
       <g transform="translate(110, 22)">
         <text x="-6" y="0" className="brown-text brand-title" textAnchor="end">
-          ПАВ
+          PAV
         </text>
         <line x1="0" y1="-18" x2="0" y2="6" className="line-separator" />
         <text x="6" y="0" className="gold-text brand-title" textAnchor="start">
@@ -48,7 +48,7 @@ function LanguageSwitch() {
   return (
     <Link
       to={otherLangPath}
-      className="px-2.5 py-1.5 text-xs font-medium border border-[#E6DFD3] rounded-lg hover:border-[#8A5A2B] transition-colors"
+      className="pav-btn pav-btn-ghost pav-btn-sm"
       aria-label={lang === "uk" ? "Switch to English" : "Перемкнути на українську"}
     >
       {lang === "uk" ? t.langSwitch.en : t.langSwitch.uk}
@@ -61,11 +61,11 @@ export function Header() {
   const { t, localizePath } = useLanguage();
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `nav-link ${isActive ? "active" : ""}`;
+    `pav-nav-link ${isActive ? "active" : ""}`;
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF7F2]/90 backdrop-blur border-b border-[#E6DFD3]">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur border-b border-primary/15">
+      <div className="max-w-[1180px] mx-auto px-6 py-4 flex items-center justify-between">
         <Link to={localizePath("/")} className="flex items-center">
           <PavItLogo className="h-11 md:h-12 w-auto" />
         </Link>
@@ -87,29 +87,23 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitch />
-          <Link
-            to={localizePath("/contact-us")}
-            className="px-4 py-2 text-sm font-medium btn-secondary"
-          >
+          <Link to={localizePath("/contact-us")} className="pav-btn pav-btn-ghost pav-btn-sm">
             {t.header.login}
           </Link>
-          <Link
-            to={localizePath("/contact-us")}
-            className="px-4 py-2 text-sm font-medium btn-primary"
-          >
+          <Link to={localizePath("/contact-us")} className="pav-btn pav-btn-primary pav-btn-sm">
             {t.header.tryFree}
           </Link>
         </div>
 
         <button
           onClick={() => setMenuOpen((open) => !open)}
-          className="md:hidden p-2"
+          className="md:hidden p-2 text-base-content"
           aria-label="Menu"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path
               d="M3 6h18M3 12h18M3 18h18"
-              stroke="#221D17"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
             />
@@ -118,7 +112,7 @@ export function Header() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden border-t border-[#E6DFD3] px-6 py-4 space-y-3">
+        <div className="md:hidden border-t border-primary/15 px-6 py-4 space-y-3">
           <NavLink
             to={localizePath("/")}
             end
@@ -154,7 +148,7 @@ export function Header() {
           <Link
             to={localizePath("/contact-us")}
             onClick={() => setMenuOpen(false)}
-            className="block px-4 py-2 text-sm font-medium btn-primary text-center mt-3"
+            className="pav-btn pav-btn-primary w-full mt-3"
           >
             {t.header.tryFree}
           </Link>

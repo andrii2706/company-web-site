@@ -130,16 +130,16 @@ const FALLBACK_PRINCIPLES: Record<"uk" | "en", WpFeatureCard[]> = {
 
 const FALLBACK_TEAM: Record<"uk" | "en", WpTeamMember[]> = {
   uk: [
-    { id: 1, name: "Андрій Коваль", role: "Співзасновник, CEO", color: "#8A5A2B" },
-    { id: 2, name: "Марія Бойко", role: "Співзасновниця, CTO", color: "#10B981" },
-    { id: 3, name: "Дмитро Сидоренко", role: "Голова продукту", color: "#EF4444" },
-    { id: 4, name: "Олена Ткач", role: "Голова партнерств", color: "#F59E0B" },
+    { id: 1, name: "Андрій Коваль", role: "Співзасновник, CEO", color: "#c5a059" },
+    { id: 2, name: "Марія Бойко", role: "Співзасновниця, CTO", color: "#e0bd7a" },
+    { id: 3, name: "Дмитро Сидоренко", role: "Голова продукту", color: "#8f8a7d" },
+    { id: 4, name: "Олена Ткач", role: "Голова партнерств", color: "#c5a059" },
   ],
   en: [
-    { id: 1, name: "Andriy Koval", role: "Co-founder, CEO", color: "#8A5A2B" },
-    { id: 2, name: "Maria Boyko", role: "Co-founder, CTO", color: "#10B981" },
-    { id: 3, name: "Dmytro Sydorenko", role: "Head of Product", color: "#EF4444" },
-    { id: 4, name: "Olena Tkach", role: "Head of Partnerships", color: "#F59E0B" },
+    { id: 1, name: "Andriy Koval", role: "Co-founder, CEO", color: "#c5a059" },
+    { id: 2, name: "Maria Boyko", role: "Co-founder, CTO", color: "#e0bd7a" },
+    { id: 3, name: "Dmytro Sydorenko", role: "Head of Product", color: "#8f8a7d" },
+    { id: 4, name: "Olena Tkach", role: "Head of Partnerships", color: "#c5a059" },
   ],
 };
 
@@ -153,57 +153,57 @@ export function AboutUs() {
   return (
     <>
       <section className="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F4EBDD] text-[#8A5A2B] text-xs font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-6">
           {settings.about_badge}
         </div>
-        <h1 className="font-display text-4xl md:text-5xl font-semibold leading-[1.15] mb-6">
+        <h1 className="font-display font-normal text-4xl md:text-5xl leading-[1.05] tracking-[-0.5px] mb-6 text-base-content">
           {settings.about_title}
         </h1>
-        <p className="text-[#4B4238] text-lg leading-relaxed max-w-2xl mx-auto">{settings.about_intro}</p>
+        <p className="text-base-content/70 text-lg leading-relaxed max-w-2xl mx-auto">{settings.about_intro}</p>
       </section>
 
       <section className="max-w-5xl mx-auto px-6 pb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((stat) => (
-            <div key={stat.id} className="card p-6 text-center">
-              <p className="font-display text-3xl font-semibold mb-1">{stat.value}</p>
-              <p className="text-sm text-[#9C9186]">{stat.label}</p>
+            <div key={stat.id} className="bg-base-200 border border-primary/15 rounded-sm p-6 text-center">
+              <p className="font-display text-3xl font-semibold mb-1 text-primary">{stat.value}</p>
+              <p className="text-sm text-muted">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="bg-white border-y border-[#E6DFD3]">
-        <div className="max-w-5xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center">
+      <section className="bg-base-200/40 border-y border-primary/15">
+        <div className="max-w-5xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="font-display text-3xl font-semibold mb-5">{settings.story_title}</h2>
-            <div className="space-y-4 text-[#4B4238] leading-relaxed">
+            <h2 className="font-display font-normal text-3xl md:text-4xl mb-5 text-base-content">{settings.story_title}</h2>
+            <div className="space-y-4 text-base-content/70 leading-relaxed">
               <p>{settings.story_p1}</p>
               <p>{settings.story_p2}</p>
               <p>{settings.story_p3}</p>
             </div>
           </div>
-          <div className="card p-3">
-            <div className="bg-[#F2ECE1] rounded-xl p-5 space-y-3">
-              <div className="bg-white rounded-lg p-4 border border-[#E6DFD3] flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#8A5A2B] flex-shrink-0"></div>
+          <div className="bg-base-200 border border-primary/15 rounded-sm p-3">
+            <div className="bg-base-300/60 rounded-sm p-5 space-y-3">
+              <div className="bg-base-100 rounded-lg p-4 border border-primary/15 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-primary flex-shrink-0"></div>
                 <div className="space-y-1.5 flex-1">
-                  <div className="h-2 w-2/3 bg-[#E6DFD3] rounded-full"></div>
-                  <div className="h-2 w-1/3 bg-[#F2ECE1] rounded-full"></div>
+                  <div className="h-2 w-2/3 bg-primary/20 rounded-full"></div>
+                  <div className="h-2 w-1/3 bg-primary/10 rounded-full"></div>
                 </div>
               </div>
-              <div className="bg-white rounded-lg p-4 border border-[#E6DFD3] flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#10B981] flex-shrink-0"></div>
+              <div className="bg-base-100 rounded-lg p-4 border border-primary/15 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-secondary flex-shrink-0"></div>
                 <div className="space-y-1.5 flex-1">
-                  <div className="h-2 w-3/4 bg-[#E6DFD3] rounded-full"></div>
-                  <div className="h-2 w-1/2 bg-[#F2ECE1] rounded-full"></div>
+                  <div className="h-2 w-3/4 bg-primary/20 rounded-full"></div>
+                  <div className="h-2 w-1/2 bg-primary/10 rounded-full"></div>
                 </div>
               </div>
-              <div className="bg-white rounded-lg p-4 border border-[#E6DFD3] flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#EF4444] flex-shrink-0"></div>
+              <div className="bg-base-100 rounded-lg p-4 border border-primary/15 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-muted-2 flex-shrink-0"></div>
                 <div className="space-y-1.5 flex-1">
-                  <div className="h-2 w-1/2 bg-[#E6DFD3] rounded-full"></div>
-                  <div className="h-2 w-1/3 bg-[#F2ECE1] rounded-full"></div>
+                  <div className="h-2 w-1/2 bg-primary/20 rounded-full"></div>
+                  <div className="h-2 w-1/3 bg-primary/10 rounded-full"></div>
                 </div>
               </div>
             </div>
@@ -211,27 +211,27 @@ export function AboutUs() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-24">
+      <section className="max-w-[1180px] mx-auto px-6 py-32">
         <div className="text-center max-w-xl mx-auto mb-16">
-          <h2 className="font-display text-3xl font-semibold mb-4">{settings.principles_title}</h2>
-          <p className="text-[#4B4238]">{settings.principles_subtitle}</p>
+          <h2 className="font-display font-normal text-3xl md:text-4xl mb-4 text-base-content">{settings.principles_title}</h2>
+          <p className="text-base-content/70">{settings.principles_subtitle}</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {principles.map((p) => (
-            <div key={p.id} className="card p-7">
+            <div key={p.id} className="bg-base-200 border border-primary/15 rounded-sm p-7 transition-colors hover:border-primary/35">
               <FeatureIcon icon={p.icon} size="sm" />
-              <h3 className="font-display font-semibold text-lg mb-2">{p.title}</h3>
-              <p className="text-[#4B4238] text-sm leading-relaxed">{p.description}</p>
+              <h3 className="font-display font-semibold text-lg mb-2 text-base-content">{p.title}</h3>
+              <p className="text-base-content/60 text-sm leading-relaxed">{p.description}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="bg-white border-y border-[#E6DFD3]">
-        <div className="max-w-6xl mx-auto px-6 py-24">
+      <section className="bg-base-200/40 border-y border-primary/15">
+        <div className="max-w-[1180px] mx-auto px-6 py-32">
           <div className="text-center max-w-xl mx-auto mb-16">
-            <h2 className="font-display text-3xl font-semibold mb-4">{settings.team_title}</h2>
-            <p className="text-[#4B4238]">{settings.team_subtitle}</p>
+            <h2 className="font-display font-normal text-3xl md:text-4xl mb-4 text-base-content">{settings.team_title}</h2>
+            <p className="text-base-content/70">{settings.team_subtitle}</p>
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
             {team.map((member) => (
@@ -240,21 +240,21 @@ export function AboutUs() {
                   className="w-20 h-20 rounded-full mx-auto mb-4"
                   style={{ background: member.color }}
                 ></div>
-                <p className="font-medium text-sm">{member.name}</p>
-                <p className="text-xs text-[#9C9186]">{member.role}</p>
+                <p className="font-medium text-sm text-base-content">{member.name}</p>
+                <p className="text-xs text-muted">{member.role}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-24">
-        <div className="rounded-3xl bg-[#221D17] px-8 py-16 md:py-20 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+      <section className="max-w-[1180px] mx-auto px-6 py-32">
+        <div className="rounded-md bg-base-200 border border-primary/20 px-8 py-16 md:py-20 text-center">
+          <h2 className="font-display font-normal text-3xl md:text-4xl text-base-content mb-4">
             {settings.join_title}
           </h2>
-          <p className="text-[#9C9186] mb-8 max-w-md mx-auto">{settings.join_subtitle}</p>
-          <Link to={localizePath("/contact-us")} className="inline-block px-7 py-3.5 font-medium btn-primary">
+          <p className="text-muted mb-8 max-w-md mx-auto">{settings.join_subtitle}</p>
+          <Link to={localizePath("/contact-us")} className="pav-btn pav-btn-primary">
             {settings.join_button}
           </Link>
         </div>
