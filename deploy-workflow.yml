@@ -1,0 +1,54 @@
+name: Deploy to InfinityFree
+
+# Запускається автоматично при кожному пуші в main.
+# Можна також запустити вручну через вкладку "Actions" на GitHub (workflow_dispatch).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Отримати код репозиторію
+        uses: actions/checkout@v4
+
+      - name: Встановити Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Встановити залежності й зібрати React
+        working-directory: company-web-app
+        run: |
+          npm ci
+          npm run build
+
+      - name: Залити React (dist/) у корінь сайту (htdocs)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: company-web-app/dist/
+          server-dir: ./htdocs/
+          # Безпечно: за замовчуванням action НЕ видаляє файли на сервері,
+          # яких немає локально — тому wp-admin/wp-content/.htaccess
+          # залишаються недоторканими.
+          exclude: |
+            **/wp-admin/**
+            **/wp-content/**
+            **/wp-includes/**
+            **/.htaccess
+            **/wp-config.php
+            **/*.php
+
+      - name: Залити код плагіна pavit-acf-bootstrap
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: wordpress-plugin/pavit-acf-bootstrap/
+          server-dir: ./htdocs/wp-content/plugins/pavit-acf-bootstrap/

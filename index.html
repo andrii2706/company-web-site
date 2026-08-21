@@ -11,8 +11,136 @@
       rel="stylesheet"
     />
     <title>Pav It</title>
+
+    <style>
+      /*
+        Критичні стилі для boot-лоадера — інлайн навмисно, щоб він
+        малювався миттєво, ще до завантаження основного CSS-бандла.
+      */
+      #boot-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #141414;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 26px;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      #boot-loader.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #boot-loader svg { width: 108px; height: 108px; overflow: visible; }
+      #boot-loader .bl-line {
+        stroke: #c5a059;
+        stroke-width: 1.4;
+        stroke-linecap: round;
+        stroke-dasharray: 70;
+        stroke-dashoffset: 70;
+        opacity: 0.15;
+        animation: bl-draw 2.2s ease-in-out infinite;
+      }
+      #boot-loader .bl-node {
+        fill: #c5a059;
+        opacity: 0;
+        transform-origin: center;
+        transform-box: fill-box;
+        animation: bl-node 2.2s ease-in-out infinite;
+      }
+      #boot-loader .bl-node-center {
+        fill: #e0bd7a;
+        opacity: 0.7;
+        animation: bl-pulse 2.2s ease-in-out infinite;
+      }
+      #boot-loader .l1, #boot-loader .n1 { animation-delay: 0s; }
+      #boot-loader .l2, #boot-loader .n2 { animation-delay: 0.18s; }
+      #boot-loader .l3, #boot-loader .n3 { animation-delay: 0.36s; }
+      #boot-loader .l4, #boot-loader .n4 { animation-delay: 0.54s; }
+      #boot-loader .l5, #boot-loader .n5 { animation-delay: 0.72s; }
+      #boot-loader .l6, #boot-loader .n6 { animation-delay: 0.9s; }
+
+      @keyframes bl-draw {
+        0% { stroke-dashoffset: 70; opacity: 0.15; }
+        35% { stroke-dashoffset: 0; opacity: 1; }
+        70% { stroke-dashoffset: 0; opacity: 1; }
+        100% { stroke-dashoffset: 0; opacity: 0.15; }
+      }
+      @keyframes bl-node {
+        0% { opacity: 0; transform: scale(0.4); }
+        35% { opacity: 1; transform: scale(1); }
+        70% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0.25; transform: scale(0.75); }
+      }
+      @keyframes bl-pulse {
+        0%, 100% { opacity: 0.55; transform: scale(0.95); }
+        50% { opacity: 1; transform: scale(1.08); }
+      }
+
+      #boot-loader .bl-word {
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        letter-spacing: 3px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        opacity: 0.9;
+      }
+      #boot-loader .bl-word .w1 { color: #f0ead9; font-weight: 400; }
+      #boot-loader .bl-word .w2 { color: #c5a059; font-weight: 500; }
+      #boot-loader .bl-word .w-bar {
+        width: 1.2px;
+        height: 12px;
+        background: #c5a059;
+        animation: bl-bar 2.2s ease-in-out infinite;
+      }
+      @keyframes bl-bar {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #boot-loader .bl-line, #boot-loader .bl-node, #boot-loader .bl-node-center, #boot-loader .bl-word .w-bar {
+          animation: none !important;
+          opacity: 1 !important;
+          stroke-dashoffset: 0 !important;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!--
+      Boot-лоадер: показується миттєво з першим пікселем сторінки
+      (ще до завантаження JS-бандла) і ховається одразу після монтування
+      React-застосунку в main.tsx. Мережевий мотив повторює hero-візуал
+      на головній сторінці — той самий фірмовий "почерк".
+    -->
+    <div id="boot-loader" role="status" aria-label="Завантаження сайту">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <line class="bl-line l1" x1="100" y1="100" x2="100" y2="42" />
+          <line class="bl-line l2" x1="100" y1="100" x2="152" y2="70" />
+          <line class="bl-line l3" x1="100" y1="100" x2="152" y2="130" />
+          <line class="bl-line l4" x1="100" y1="100" x2="100" y2="158" />
+          <line class="bl-line l5" x1="100" y1="100" x2="48" y2="130" />
+          <line class="bl-line l6" x1="100" y1="100" x2="48" y2="70" />
+        </g>
+        <circle class="bl-node n1" cx="100" cy="42" r="5" />
+        <circle class="bl-node n2" cx="152" cy="70" r="5" />
+        <circle class="bl-node n3" cx="152" cy="130" r="5" />
+        <circle class="bl-node n4" cx="100" cy="158" r="5" />
+        <circle class="bl-node n5" cx="48" cy="130" r="5" />
+        <circle class="bl-node n6" cx="48" cy="70" r="5" />
+        <circle class="bl-node-center" cx="100" cy="100" r="7" />
+      </svg>
+      <div class="bl-word">
+        <span class="w1">PAV</span><span class="w-bar"></span><span class="w2">IT</span>
+      </div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
