@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://pav-it.ct.ws/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/about-us</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/about-us"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en/about-us"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en/about-us"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/services</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/services"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en/services"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/contact-us</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/contact-us"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en/contact-us"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en/contact-us"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/en</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/en/about-us</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/about-us"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en/about-us"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en/about-us"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/en/services</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/services"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en/services"/>
+  </url>
+  <url>
+    <loc>https://pav-it.ct.ws/en/contact-us</loc>
+    <lastmod>2026-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://pav-it.ct.ws/contact-us"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pav-it.ct.ws/en/contact-us"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pav-it.ct.ws/en/contact-us"/>
+  </url>
+</urlset>
