@@ -6,35 +6,32 @@ function PavItLogo({ className = "h-11 w-auto" }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 220 56"
+      viewBox="0 0 230 56"
       className={className}
       role="img"
-      aria-label="PAV IT — IT Solutions & Technology"
+      aria-label="PAV IT (ПАВ ІТ) — IT Solutions & Technology"
     >
       <defs>
         <style>{`
           .brown-text { fill: #f0ead9; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
           .gold-text { fill: #c5a059; font-family: 'Montserrat', 'Segoe UI', sans-serif; }
-          .brand-title { font-size: 26px; font-weight: 500; letter-spacing: 1px; }
-          .brand-subtitle { font-size: 5.5px; font-weight: 600; letter-spacing: 1.6px; }
+          .brand-title { font-size: 25px; font-weight: 500; letter-spacing: 1px; }
+          .brand-subtitle { font-size: 5.2px; font-weight: 600; letter-spacing: 1.5px; }
           .line-separator { stroke: #c5a059; stroke-width: 1.6; stroke-linecap: round; }
         `}</style>
       </defs>
 
-      <g transform="translate(110, 22)">
-        <text x="-6" y="0" className="brown-text brand-title" textAnchor="end">
-          PAV
-        </text>
-        <line x1="0" y1="-18" x2="0" y2="6" className="line-separator" />
-        <text x="6" y="0" className="gold-text brand-title" textAnchor="start">
-          IT
-        </text>
-        <text
-          x="0"
-          y="20"
-          className="brown-text brand-subtitle"
-          textAnchor="middle"
-        >
+      {/* Знак: мережа з вузлів */}
+      <g>
+        <polygon points="30.00,11.00 44.72,19.50 44.72,36.50 30.00,45.00 15.28,36.50 15.28,19.50" fill="none" stroke="#c5a059" strokeOpacity=".45" strokeWidth="1.43" strokeLinejoin="round"/><line x1="30.00" y1="28.00" x2="30.00" y2="11.00" stroke="#c5a059" strokeWidth="2.60" strokeLinecap="round"/><line x1="30.00" y1="28.00" x2="44.72" y2="19.50" stroke="#c5a059" strokeWidth="2.60" strokeLinecap="round"/><line x1="30.00" y1="28.00" x2="44.72" y2="36.50" stroke="#c5a059" strokeWidth="2.60" strokeLinecap="round"/><line x1="30.00" y1="28.00" x2="30.00" y2="45.00" stroke="#c5a059" strokeWidth="2.60" strokeLinecap="round"/><line x1="30.00" y1="28.00" x2="15.28" y2="36.50" stroke="#c5a059" strokeWidth="2.60" strokeLinecap="round"/><line x1="30.00" y1="28.00" x2="15.28" y2="19.50" stroke="#c5a059" strokeWidth="2.60" strokeLinecap="round"/><circle cx="30.00" cy="11.00" r="3.60" fill="#c5a059"/><circle cx="44.72" cy="19.50" r="3.60" fill="#c5a059"/><circle cx="44.72" cy="36.50" r="3.60" fill="#c5a059"/><circle cx="30.00" cy="45.00" r="3.60" fill="#c5a059"/><circle cx="15.28" cy="36.50" r="3.60" fill="#c5a059"/><circle cx="15.28" cy="19.50" r="3.60" fill="#c5a059"/><circle cx="30.00" cy="28.00" r="5.00" fill="#e0bd7a"/>
+      </g>
+
+      {/* Напис */}
+      <g transform="translate(64, 31)">
+        <text x="0" y="0" className="brown-text brand-title">PAV</text>
+        <line x1="62" y1="-18" x2="62" y2="5" className="line-separator" />
+        <text x="70" y="0" className="gold-text brand-title">IT</text>
+        <text x="0" y="14" className="gold-text brand-subtitle">
           IT SOLUTIONS &amp; TECHNOLOGY
         </text>
       </g>
