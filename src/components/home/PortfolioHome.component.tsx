@@ -35,7 +35,7 @@ const FALLBACK_SETTINGS: Record<"uk" | "en", WpSiteSettings> = {
     hero_badge: "Новий редактор компонентів вже доступний",
     hero_title: "Збирайте веб-додатки швидше, без боротьби з інфраструктурою",
     hero_subtitle:
-      "Pav It з'єднує дизайн, бекенд та деплой в одному робочому просторі — ваша команда фокусується на продукті, а не на конфігурації серверів.",
+      "PAV IT (ПАВ ІТ) — агенція веб-розробки: створення сайтів і веб-додатків на Angular, React, Next.js. Дизайн, бекенд та деплой в одному процесі — ви фокусуєтесь на продукті, а не на конфігурації серверів.",
     hero_cta_primary: "Почати безкоштовно",
     hero_cta_secondary: "Подивитись можливості",
     about_title: "Ми будуємо інструменти, якими самі хочемо користуватись",
@@ -53,7 +53,7 @@ const FALLBACK_SETTINGS: Record<"uk" | "en", WpSiteSettings> = {
     hero_badge: "New component editor is now available",
     hero_title: "Build web apps faster, without fighting your infrastructure",
     hero_subtitle:
-      "Pav It brings design, backend, and deployment into one workspace — your team focuses on the product, not server configuration.",
+      "PAV IT is a web development agency: websites and web apps with Angular, React and Next.js. Design, backend and deployment in one workflow — you focus on the product, not server configuration.",
     hero_cta_primary: "Start for free",
     hero_cta_secondary: "See what's included",
     about_title: "We build the tools we want to use ourselves",

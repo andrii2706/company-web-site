@@ -6,7 +6,7 @@ import { getSiteSettings, type WpSiteSettings } from "../../service/wp";
 const FALLBACK_SETTINGS: WpSiteSettings = {
   site_name: "Pav It",
   footer_tagline: "Платформа для команд, що будують і запускають веб-додатки швидше.",
-  footer_copyright: "© 2026 Pav It. Усі права захищено.",
+  footer_copyright: "© 2026 PAV IT (ПАВ ІТ). Усі права захищено.",
   contact_email: "hello@pavit.dev",
   contact_office_city: "Львів, Україна",
 };
